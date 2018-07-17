@@ -1,0 +1,21 @@
+.command-line {
+  position: relative;
+  border-radius: 4px;
+  background-color: $light-grey;
+  overflow: hidden;
+  font-size: 1em;
+  font-family: Ubuntu Mono;
+  font-weight: 300;
+  padding: .7em 1em;
+  color: $cool-grey;
+  width: 100%;
+
+  code {
+    white-space: pre-wrap;
+  }
+
+  b,
+  strong {
+    font-weight: bold;
+  }
+}

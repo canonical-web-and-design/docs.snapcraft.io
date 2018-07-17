@@ -1,0 +1,48 @@
+.inline-logos {
+  padding-top: 20px;
+
+  .inline-logos__item {
+    margin: 0;
+    height: auto;
+
+    @media only screen and (min-width: $breakpoint-medium) {
+      margin-right: 20px;
+      margin-bottom: 20px;
+      width: 180px;
+      padding: 20px;
+    }
+
+    @media only screen and (max-width: $breakpoint-medium) {
+      margin-right: 20px;
+      margin-bottom: 20px;
+      width: 140px;
+      padding: 10px;
+    }
+  }
+}
+
+@media only screen and (min-width: $breakpoint-medium) {
+  .inline-logos .inline-logos__image {
+    max-height: 90px;
+    max-width: 130px;
+    margin: auto;
+  }
+}
+
+@media only screen and (max-width: $breakpoint-medium) {
+  .inline-logos .inline-logos__image {
+    max-width: 110px;
+    margin: auto;
+  }
+}
+
+.grid-list {
+  h3 {
+    margin-top: .2em;
+  }
+}
+
+/// xxx hack for vanilla issue
+.equal-height__align-vertically {
+  align-items: flex-start;
+}
