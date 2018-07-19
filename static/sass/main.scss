@@ -1,0 +1,42 @@
+@charset "utf-8";
+
+// Import the vanilla framework - https://github.com/ubuntudesign/vanilla-framework
+@import "../../node_modules/vanilla-framework/scss/vanilla";
+
+// Run the vanilla framework
+@include vanilla;
+
+// Custom options
+$site-max-width:   auto;
+$navigation-width: 270px;
+$color-navigation-background: #252525;
+$light-mid-grey:   #d4d4d4;
+$ubuntu-orange:    #dd4814;
+$color-link:       #007aa6;
+
+@import "helpers";
+@import "base";
+@import "header";
+@import "documentation";
+@import "inline-logos";
+@import "highlight";
+@import "footer";
+
+@import "command-line";
+
+.documentation__content pre {
+  @extend .code-block !optional;
+  @extend .command-line !optional;
+
+  border: 1px solid #cdcdcd;
+
+  code {
+    color: inherit;
+  }
+}
+
+// This fixes https://github.com/canonical-docs/snappy-docs/issues/393
+// When code elements are within a heading, the font-size should be inherited.
+code {
+  font-size: inherit;
+}

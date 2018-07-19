@@ -1,0 +1,152 @@
+@function vf-url-friendly-color($color) {
+  @if type-of($color) != 'color' {
+    @warn '#{$fill-color} is not a color.';
+    @return false;
+  } @else {
+    @return '%23' + str-slice('#{$color}', 2, -1);
+  }
+}
+
+@mixin vf-icon-size($size) {
+  height: $size;
+  width: $size;
+}
+
+%icon {
+  background: {
+    position: center;
+    repeat: no-repeat;
+    size: contain;
+  }
+  display: inline-block;
+  margin: 0;
+  overflow: hidden;
+  padding: 0;
+  position: relative;
+  text-indent: -999em;
+  top: -2px;
+  vertical-align: sub;
+}
+
+@mixin vf-icon-twitter($color) {
+  background-image: url("data:image/svg+xml,%0A%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' %3E%3Cg fill-rule='nonzero' fill='none'%3E%3Ccircle cx='20' cy='20' r='20' fill='#{$color}'/%3E%3Cpath d='M16.34 30.55c8.87 0 13.72-7.35 13.72-13.72 0-.21 0-.42-.01-.62.94-.68 1.76-1.53 2.41-2.5-.86.38-1.79.64-2.77.76 1-.6 1.76-1.54 2.12-2.67-.93.55-1.96.95-3.06 1.17a4.799 4.799 0 0 0-3.52-1.52c-2.66 0-4.82 2.16-4.82 4.82 0 .38.04.75.13 1.1a13.68 13.68 0 0 1-9.94-5.04c-.41.71-.65 1.54-.65 2.42a4.8 4.8 0 0 0 2.15 4.01c-.79-.02-1.53-.24-2.18-.6v.06c0 2.34 1.66 4.28 3.87 4.73a4.807 4.807 0 0 1-2.18.08 4.815 4.815 0 0 0 4.5 3.35 9.693 9.693 0 0 1-7.14 1.99c2.11 1.38 4.65 2.18 7.37 2.18' fill='%23FFF'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+@mixin vf-icon-facebook($color) {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='40' width='40' xmlns:xlink='http://www.w3.org/1999/xlink'%3E%3Cdefs%3E%3Ccircle id='a' cx='20' cy='20' r='20'/%3E%3C/defs%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cmask id='b' fill='%23fff'%3E%3Cuse xlink:href='%23a'/%3E%3C/mask%3E%3Cuse fill='#{$color}' fill-rule='nonzero' xlink:href='%23a'/%3E%3Cpath d='M30.037 10.001c-3.92 0-6.603 2.449-6.603 6.945v3.526H19v5.255h4.434V40c1.82-.246 3.6-.728 5.3-1.438V25.727h4.423l.66-5.255h-5.084V17.47c0-1.522.48-3.085 2.55-2.563H34v-4.7c-.47-.064-2.085-.207-3.963-.207v.001z' fill='%23FFF' fill-rule='nonzero' mask='url%28%23b%29'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+@mixin vf-icon-google($color) {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' %3E%3Cpath d='M20 0C8.955 0 0 8.955 0 20s8.955 20 20 20 20-8.955 20-20S31.045 0 20 0zm-4.862 26.805A6.799 6.799 0 0 1 8.333 20a6.799 6.799 0 0 1 6.805-6.805c1.839 0 3.374.67 4.559 1.778l-1.845 1.78c-.507-.486-1.39-1.05-2.714-1.05-2.323 0-4.218 1.925-4.218 4.299 0 2.373 1.897 4.298 4.218 4.298 2.694 0 3.707-1.937 3.86-2.937h-3.86V19.03h6.425c.06.34.107.68.107 1.128.002 3.887-2.605 6.647-6.532 6.647zm16.529-5.833H28.75v2.916h-1.945v-2.916h-2.917v-1.944h2.917v-2.916h1.945v2.916h2.917v1.944z' fill='#{$color}' fill-rule='nonzero'/%3E%3C/svg%3E");
+}
+
+@mixin vf-icon-youtube($color) {
+  background-image: url("data:image/svg+xml,%0A%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' xmlns:xlink='http://www.w3.org/1999/xlink'%3E%3Cdefs%3E%3Cpath id='a' d='M.009 18.367V.006h26.06v18.36z'/%3E%3C/defs%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Ccircle fill='#{$color}' fill-rule='nonzero' cx='20' cy='20' r='20'/%3E%3Cg transform='translate%287 11%29'%3E%3Cmask id='b' fill='%23fff'%3E%3Cuse xlink:href='%23a'/%3E%3C/mask%3E%3Cpath d='M25.524 2.868A3.275 3.275 0 0 0 23.22.548C21.187 0 13.034 0 13.034 0S4.882 0 2.85.548a3.275 3.275 0 0 0-2.305 2.32C0 4.914 0 9.183 0 9.183s0 4.27.545 6.316a3.276 3.276 0 0 0 2.305 2.32c2.032.548 10.184.548 10.184.548s8.153 0 10.185-.548a3.276 3.276 0 0 0 2.305-2.32c.545-2.047.545-6.316.545-6.316s0-4.269-.545-6.315' fill='%23FFF' mask='url%28%23b%29'/%3E%3C/g%3E%3Cpath fill='#{$color}' d='M17.368 24.06l6.814-3.876-6.814-3.877v7.753'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+@mixin vf-external-link-icon($color) {
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='0.75em' height='0.75em' viewBox='0 0 16 16' %3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cpath d='M-1-1h16v16H-1'/%3E%3Cpath fill='#{$color}' d='M4.867 1.313C.6 1.32.067 1.443.067 4.51v6.4c0 3.2.533 3.2 5.333 3.2h2.133c4.8 0 5.334 0 5.334-3.2v-1.6h-1.6v1.068c0 2.133 0 2.133-4.267 2.133H5.933c-4.266 0-4.266 0-4.266-2.132V5.044c0-1.93.034-2.112 3.2-2.13v-1.6z'/%3E%3Cpath d='M-1-1h16v16H-1'/%3E%3Cpath fill='#{$color}' d='M6.435 2.16c.11-.446 7.113-2.196 7.448-1.86.335.334-1.416 7.335-1.863 7.447-.447.112-5.697-5.14-5.586-5.586z'/%3E%3Cpath fill='#{$color}' d='M9.032 3.38L4.705 7.708l1.767 1.767L10.8 5.148'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+.p-footer {
+  $color-mid-dark: $warm-grey;
+  background: $light-grey;
+  padding: 2rem 20px;
+
+  .row {
+    padding: 0;
+    border-bottom: 0;
+  }
+
+  a {
+    color: $color-link;
+  }
+
+  .p-footer__links {
+    margin-left: 0;
+
+    a.p-footer__link {
+      color: $cool-grey;
+
+      .p-icon--top {
+        @extend %icon;
+        @include vf-icon-size(1rem);
+        background-image: url('https://assets.ubuntu.com/v1/9ec2c354-icon-arrow-up.svg');
+        background-size: 12px 12px;
+        margin-left: .5rem;
+      }
+    }
+  }
+
+  .p-inline-list--compact {
+    margin-left: 0;
+    padding-left: 0;
+
+    .p-inline-list__item {
+      display: inline;
+      list-style: none;
+      margin-right: 1.25rem;
+
+      &:last-of-type,
+      .last-item {
+        margin-right: 0;
+      }
+
+      .p-social-icon {
+        &--twitter {
+          @extend %icon;
+          @include vf-icon-size(2.5rem);
+          @include vf-icon-twitter(rgba($color-mid-dark, .999999));
+
+          &:hover {
+            @include vf-icon-twitter(rgba(#1da1f2, .999999));
+          }
+        }
+
+        &--google {
+          @extend %icon;
+          @include vf-icon-size(2.5rem);
+          @include vf-icon-google(rgba($color-mid-dark, .999999));
+
+          &:hover {
+            @include vf-icon-google(rgba(#dd4b39, .999999));
+          }
+        }
+
+        &--facebook {
+          @extend %icon;
+          @include vf-icon-size(2.5rem);
+          @include vf-icon-facebook(rgba($color-mid-dark, .999999));
+
+          &:hover {
+            @include vf-icon-facebook(rgba(#3b5998, .999999));
+          }
+        }
+
+        &--youtube {
+          @extend %icon;
+          @include vf-icon-size(2.5rem);
+          @include vf-icon-youtube(rgba($color-mid-dark, .999999));
+
+          &:hover {
+            @include vf-icon-youtube(rgba(#d9252a, .999999));
+          }
+        }
+      }
+    }
+  }
+
+  .p-link--external {
+    @include vf-external-link-icon(vf-url-friendly-color($color-link));
+    background-position: top right;
+    background-repeat: no-repeat;
+    background-size: .75em;
+    margin-top: -.25em;
+    padding: .25em 1em 0 0;
+  }
+}
+
+.footer-wrapper {
+  -webkit-box-shadow: inset 0 2px 2px -1px #cdcdcd;
+  box-shadow: inset 0 2px 2px -1px #cdcdcd;
+}

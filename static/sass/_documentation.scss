@@ -1,0 +1,319 @@
+$gutter: 20px;
+$button-width: 10px;
+$color-focus: #9d9c9a;
+
+.documentation {
+  // sass-lint:disable nesting-depth
+  background-color: $white;
+  display: flex;
+  padding: 0;
+  flex: 1;
+
+  @media only screen and (max-width: $breakpoint-medium) {
+    flex-direction: column;
+  }
+
+  &__nav {
+    // To enabling hiding of the bottom-most border in the navigation
+    overflow: hidden;
+
+    @media only screen and (min-width: $breakpoint-medium) {
+      border-right: 1px solid #ccc;
+      width: $navigation-width;
+      min-width: $navigation-width;
+    }
+
+    ul {
+      list-style: none;
+      margin: 0;
+      padding-left: 0;
+      padding-right: 0;
+      user-select: none;
+
+      li {
+        padding-left: $gutter;
+        padding-right: $gutter;
+        padding-top: 7px;
+        margin: 0;
+        position: relative;
+
+        a {
+          display: block;
+          color: $cool-grey;
+
+          &:hover,
+          &:focus {
+            text-decoration: none;
+          }
+
+          &:hover,
+          &.active {
+            color: $ubuntu-orange;
+          }
+        }
+
+        &::after {
+          width: $button-width;
+          height: 1.875em;
+          display: block;
+          position: absolute;
+          top: $gutter / 2;
+          right: $gutter;
+          cursor: pointer;
+        }
+
+        &.collapsed {
+          padding-right: $gutter + $button-width;
+
+          & > ul {
+            display: none;
+          }
+
+          &::after {
+            content: '+';
+          }
+        }
+
+        &.expanded {
+
+          & > ul {
+            display: block;
+          }
+
+          &::after {
+            content: '-';
+          }
+        }
+      }
+    }
+
+    & > ul {
+      // Hide the bottom-most border
+      // only if it's pushing right up against the footer
+      // so we don't get an ugly double-border effect
+      @media only screen and (min-width: $breakpoint-medium) {
+        margin-bottom: -1px;
+      }
+
+      & > li {
+        border-bottom: 1px dotted #b2b2b2;
+        padding-top: $gutter / 2;
+        padding-bottom: $gutter / 2;
+
+        & > a {
+          font-size: 1.25em;
+        }
+
+        & > ul {
+          & > li {
+            padding-left: 0;
+            padding-right: 0;
+          }
+        }
+
+        &::after {
+          background-position: center center;
+          background-repeat: no-repeat;
+        }
+
+        &.collapsed {
+
+          &::after {
+            content: '';
+            background-image: url('#{$asset-server}04d2075a-chevron_down.svg');
+          }
+        }
+
+        &.expanded {
+
+          &::after {
+            content: '';
+            background-image: url('#{$asset-server}f3f43376-chevron_up.svg');
+          }
+        }
+      }
+    }
+
+    // Top level sections get bottom padding.
+    .section {
+      padding: 0 0 20px;
+
+      // Subsections & collapsed sections get no padding.
+      &.collapsed,
+      .section {
+        padding: 0;
+      }
+    }
+
+    .search-form {
+      @include rounded-corners(3px);
+      position: relative;
+      width: 100%;
+      max-width: 100%;
+      margin: 0 0 20px 0;
+      padding: 0;
+
+      input[type="text"] {
+        @include box-shadow(none);
+        position: relative;
+        background-color: #fff;
+        height: 40px;
+        border: 1px solid $light-mid-grey;
+        padding-left: 35px;
+        color: $cool-grey;
+
+        &:focus {
+          border: 1px solid $color-focus;
+          outline: none;
+        }
+
+        &::-webkit-input-placeholder {
+          color: $cool-grey;
+          font-size: 1em;
+          opacity: 1;
+        }
+
+        &:-moz-placeholder {
+          color: $cool-grey;
+          opacity: 1;
+          font-size: 1em;
+        }
+
+        &::-moz-placeholder {
+          color: $cool-grey;
+          opacity: 1;
+          font-size: 1em;
+        }
+
+        &:-ms-input-placeholder {
+          color: $cool-grey;
+          font-size: 1em;
+          opacity: 1;
+        }
+      }
+
+      button[type="submit"] {
+        margin-left: 0;
+        position: absolute;
+        top: 5px;
+        left: 5px;
+        height: 30px;
+        width: 30px;
+        padding: 0;
+        line-height: 0;
+        -webkit-appearance: none;
+        display: block;
+        background: transparent;
+        background-image: url("../img/icons/search_16.svg");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 16px;
+        text-indent: -9999px;
+      }
+    }
+
+    .versions-nav {
+      padding: 1em 0;
+
+      .unavailable {
+        text-decoration: line-through;
+        color: $warm-grey;
+      }
+
+      .label {
+        display: block;
+        margin-bottom: .5em;
+      }
+
+      ul {
+        display: inline;
+        border-right: 1px solid $light-mid-grey;
+        padding-bottom: .2em;
+
+        li {
+          display: inline-block;
+          margin-right: .3em;
+
+          a {
+            padding: 0;
+            margin: 0;
+            border-bottom: 1px solid $warm-grey;
+            text-decoration: none;
+            line-height: 1.1;
+          }
+
+          strong {
+            border-bottom: 1px solid $ubuntu-orange;
+          }
+        }
+      }
+
+      .stable {
+        margin-left: .5em;
+        border-bottom: 1px solid $warm-grey;
+        text-decoration: none;
+      }
+    }
+  }
+
+  .note {
+    padding: 20px;
+    background-color: #fdf6e7;
+    border: 1px solid #eca918;
+    border-radius: 2px;
+    color: inherit;
+  }
+
+  &__content {
+    padding: 20px;
+
+    @media only screen and (min-width: $breakpoint-medium) {
+      padding: 20px 40px;
+    }
+
+    iframe {
+      margin: .25em 0 1em 0;
+      width: 100%;
+    }
+
+    dl {
+
+      + h2 {
+        margin-top: .563em;
+      }
+
+      + p {
+        margin-top: .75em;
+      }
+    }
+
+    dt {
+      margin: 1em 0 .5em;
+    }
+
+    pre {
+      background-color: $cool-grey;
+      border: 0;
+      color: $mid-grey;
+
+      code {
+        margin-bottom: 0;
+        color: $mid-grey;
+      }
+    }
+  }
+  // sass-lint:enable nesting-depth
+}
+
+// Make main section fill the vertical space (sticky footer)
+.docs {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+.docs .wrapper {
+  flex: 1;
+  display: flex;
+  margin: 0;
+}
