@@ -7,16 +7,13 @@ import prometheus_flask_exporter
 from canonicalwebteam.http import CachedSession
 
 # Local
-from webapp import helpers, redirects
+from webapp import redirects
 
-
-INSIGHTS_ADMIN_URL = 'https://admin.insights.ubuntu.com'
 
 app = flask.Flask(__name__)
 app.template_folder = '../templates'
 app.static_folder = '../static'
 app.url_map.strict_slashes = False
-app.url_map.converters['regex'] = helpers.RegexConverter
 
 if not app.debug:
     metrics = prometheus_flask_exporter.PrometheusMetrics(
@@ -56,7 +53,7 @@ def clear_trailing():
 
 
 @app.route('/<path:path>')
-def homepage(path):
+def document(path):
     results = discourse_api_session.get(
         "https://forum.snapcraft.io/t/{path}.json".format(**locals())
     ).json()
