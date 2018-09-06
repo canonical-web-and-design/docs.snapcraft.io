@@ -1,5 +1,13 @@
 {% extends "base.html" %}
+
 {% block body %}
-    <h1 id="introduction">{{ title }}</h1>
-    {{ document_content | safe }}
+  <div class="row documentation no-border">
+    <nav class="documentation__nav">
+      {{ nav_html | safe }}
+    </nav>
+    <main class="documentation__content">
+      <h1 id="introduction">{{ title }}</h1>
+      {{ content_html | safe }}
+    </main>
+  </div>
 {% endblock %}
