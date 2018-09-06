@@ -305,6 +305,19 @@ $color-focus: #9d9c9a;
   // sass-lint:enable nesting-depth
 }
 
+.documentation__nav {
+    padding: 10px 20px;
+
+    & > ul > li {
+        padding: 7px 0 0 0;
+        border-bottom: none;
+
+        & > a {
+            font-size: 1em;
+        }
+    }
+}
+
 // Make main section fill the vertical space (sticky footer)
 .docs {
   display: flex;
