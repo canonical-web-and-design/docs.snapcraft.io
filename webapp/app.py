@@ -7,7 +7,7 @@ import prometheus_flask_exporter
 from requests.exceptions import HTTPError
 
 # Local
-from webapp.models import DiscourseDocs, RedirectFoundError
+from webapp.models import DiscourseDocs
 
 
 discourse = DiscourseDocs(
@@ -24,13 +24,6 @@ if not app.debug:
         app, group_by_endpoint=True, buckets=[0.25, 0.5, 0.75, 1, 2], path=None
     )
     metrics.start_http_server(port=9990, endpoint="/")
-
-app.before_request(
-    redirects.prepare_redirects(
-        permanent_redirects_path="permanent-redirects.yaml",
-        redirects_path="redirects.yaml",
-    )
-)
 
 
 @app.errorhandler(404)
