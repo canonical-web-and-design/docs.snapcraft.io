@@ -4,4 +4,6 @@ pyyaml==3.13
 yamlordereddictloader==0.4.0
 Flask==0.12.2
 prometheus-flask-exporter==0.2.0
-talisker==0.9.6
+statsd<3.3.0
+gunicorn[gevent]
+talisker==0.9.14

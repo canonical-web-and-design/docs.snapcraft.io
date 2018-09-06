@@ -2,9 +2,9 @@
   "scripts": {
     "test": "sass-lint static/**/*.scss --verbose --no-exit",
     "build": "node-sass --include-path node_modules static/sass --output static/css && postcss --use autoprefixer --replace 'static/css/**/*.css'",
-    "serve": "talisker.gunicorn webapp.app:app --reload --timeout 9999 --access-logfile - --error-logfile - --bind 0.0.0.0:${PORT}",
     "watch": "watch -p 'static/sass/**/*.scss' -c 'yarn run build'",
-    "clean": "rm -rf node_modules yarn-error.log static/css/**/*.css *.log *.sqlite _site/ build/ .jekyll-metadata .bundle"
+    "clean": "rm -rf node_modules yarn-error.log static/css/**/*.css *.log *.sqlite _site/ build/ .jekyll-metadata .bundle",
+    "serve": "./entrypoint 0.0.0.0:${PORT}"
   },
   "author": "Canonical webteam",
   "devDependencies": {
