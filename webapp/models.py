@@ -2,6 +2,7 @@
 import re
 
 # Third-party
+import dateutil.parser
 from bs4 import BeautifulSoup
 from requests.exceptions import HTTPError
 from urllib.parse import urlparse
@@ -53,22 +54,38 @@ class DiscourseDocs:
 
         return response.json()
 
-    def get_frontpage_nav_and_content(self):
-        frontpage = self.get_topic(self.frontpage_id)
-        frontpage_html = frontpage["post_stream"]["posts"][0]["cooked"]
-        frontpage_soup = BeautifulSoup(frontpage_html, features="html.parser")
+    def parse_topic(self, topic):
+        return {
+            "title": topic["title"],
+            "body_html": topic["post_stream"]["posts"][0]["cooked"],
+            "updated": dateutil.parser.parse(
+                topic["post_stream"]["posts"][0]["updated_at"]
+            ),
+            "forum_link": f"{self.base_url}/t/{topic['slug']}/{topic['id']}",
+            "path": f"/t/{topic['slug']}/{topic['id']}",
+        }
 
+    def get_frontpage(self):
+        # Get topic data
+        topic = self.get_topic(self.frontpage_id)
+        frontpage = self.parse_topic(topic)
+
+        # Split HTML into nav and body
+        frontpage_html = frontpage["body_html"]
+        frontpage_soup = BeautifulSoup(frontpage_html, features="html.parser")
         frontpage_splitpoint = frontpage_soup.find(
             re.compile("^h[1-6]$"), text="Content"
         )
-
         content_elements = frontpage_splitpoint.fetchPreviousSiblings()
         nav_elements = frontpage_splitpoint.fetchNextSiblings()
 
+        # Update frontpage
+        frontpage["body_html"] = "\n".join(
+            map(str, reversed(content_elements))
+        )
         nav_html = "\n".join(map(str, nav_elements))
-        content_html = "\n".join(map(str, content_elements))
 
-        return (nav_html, content_html)
+        return frontpage, nav_html
 
     def get_document(self, path):
         """
@@ -78,24 +95,10 @@ class DiscourseDocs:
         - Navigation content
         """
 
-        topic = self.get_topic(path)
+        document, nav_html = self.get_frontpage()
 
-        (nav_html, content_html) = self.get_frontpage_nav_and_content()
+        if f"/t/{path}" != document["path"]:
+            topic = self.get_topic(path)
+            document = self.parse_topic(topic)
 
-        if topic["id"] != self.frontpage_id:
-            content_html = topic["post_stream"]["posts"][0]["cooked"]
-
-        return {
-            "title": topic["title"],
-            "content_html": content_html,
-            "nav_html": nav_html,
-        }
-
-    def get_frontpage_url(self):
-        """
-        Get the URL of the front page
-        """
-
-        topic = self.get_topic(self.frontpage_id)
-
-        return f"/t/{topic['slug']}/{topic['id']}"
+        return document, nav_html

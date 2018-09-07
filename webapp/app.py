@@ -3,11 +3,12 @@ from urllib.parse import urlparse, urlunparse, unquote
 
 # Third-party
 import flask
+import humanize
 import prometheus_flask_exporter
 from requests.exceptions import HTTPError
 
 # Local
-from webapp.models import DiscourseDocs
+from webapp.models import DiscourseDocs, RedirectFoundError
 
 
 discourse = DiscourseDocs(
@@ -28,19 +29,16 @@ if not app.debug:
 
 @app.errorhandler(404)
 def page_not_found(e):
-    (nav_html, content_html) = discourse.get_frontpage_nav_and_content()
+    frontpage, nav_html = discourse.get_frontpage()
 
     return flask.render_template("404.html", navigation_html=nav_html), 404
 
 
 @app.errorhandler(410)
 def page_deleted(e):
-    return (
-        flask.render_template(
-            "410.html", navigation_html=discourse.get_nav_html()
-        ),
-        410,
-    )
+    frontpage, nav_html = discourse.get_frontpage()
+
+    return (flask.render_template("410.html", navigation_html=nav_html), 410)
 
 
 @app.errorhandler(500)
@@ -70,16 +68,25 @@ def homepage():
     Redirect to the frontpage topic
     """
 
-    return flask.redirect(discourse.get_frontpage_url())
+    frontpage, nav_html = discourse.get_frontpage()
+
+    return flask.redirect(frontpage["path"])
 
 
 @app.route("/t/<path:path>")
 def document(path):
     try:
-        document = discourse.get_document(path)
+        document, nav_html = discourse.get_document(path)
     except RedirectFoundError as redirect_error:
         return flask.redirect(redirect_error.redirect_path)
     except HTTPError as http_error:
         flask.abort(http_error.response.status_code)
 
-    return flask.render_template("document.html", **document)
+    return flask.render_template(
+        "document.html",
+        title=document["title"],
+        body_html=document["body_html"],
+        forum_link=document["forum_link"],
+        updated=humanize.naturaltime(document["updated"].replace(tzinfo=None)),
+        nav_html=nav_html,
+    )

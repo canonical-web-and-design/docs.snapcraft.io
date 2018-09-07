@@ -7,7 +7,14 @@
     </nav>
     <main class="documentation__content">
       <h1 id="introduction">{{ title }}</h1>
-      {{ content_html | safe }}
+      {{ body_html | safe }}
+      <br />
+      <hr />
+      <br />
+      <section class="documentation__footer">
+        <p>Help improve this document <a href="{{ forum_link }}">in the forum.</a></p>
+        <p>Last updated {{ updated }}.</p>
+      </section>
     </main>
   </div>
 {% endblock %}
