@@ -1,13 +1,24 @@
 {% extends "base.html" %}
-{% block title %}410 - page deleted{% endblock %}
+
+{% block title %}410 - page removed{% endblock %}
+
 {% block body %}
-  <div class="col-6 u-vertically-center u-align--center">
-    <img src="https://assets.ubuntu.com/v1/bcdcf2c8-image-404.svg?w=365" alt="Error owl" width="365" />
-  </div>
-  <div class="col-6 u-vertically-center">
-    <div>
-      <h1>410: Page deleted</h1>
-      <p class="p-heading--four">{{ message | default:"This page has been removed" }}</p>
-    </div>
+  <div class="row documentation no-border">
+    {% if navigation_html %}
+      <nav class="documentation__nav">
+        {{ navigation_html | safe }}
+      </nav>
+    {% endif %}
+    <main class="documentation__content">
+      <div class="col-6 u-vertically-center u-align--center">
+          <img src="https://assets.ubuntu.com/v1/bcdcf2c8-image-404.svg?w=365" alt="Error owl" width="365" />
+        </div>
+        <div class="col-6 u-vertically-center">
+          <div>
+            <h1>410: Page deleted</h1>
+            <p class="p-heading--four">{{ message or "This page has been removed." }}</p>
+          </div>
+        </div>
+    </main>
   </div>
 {% endblock %}

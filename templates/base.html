@@ -65,14 +65,7 @@
         </header>
 
         <div class="wrapper">
-            <div class="row documentation no-border">
-                <nav class="documentation__nav">
-                  {% include "navigation.html" %}
-                </nav>
-                <main class="documentation__content">
-                    {% block body %}{% endblock %}
-                </main>
-            </div>
+            {% block body %}{% endblock %}
         </div>
 
         <footer class="footer-wrapper">
