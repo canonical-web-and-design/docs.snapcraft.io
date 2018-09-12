@@ -37,7 +37,7 @@ class DiscourseDocs:
 
         self.base_url = base_url.rstrip("/")
         self.frontpage_id = frontpage_id
-        self.session = CachedSession(expire_after=60)
+        self.session = CachedSession(expire_after=300)
 
     def get_topic(self, path):
         """
