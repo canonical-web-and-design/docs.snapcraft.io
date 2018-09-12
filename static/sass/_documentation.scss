@@ -3,6 +3,8 @@ $button-width: 10px;
 $color-focus: #9d9c9a;
 
 .documentation {
+  max-width: $site-max-width;
+  margin: 0 auto;
   // sass-lint:disable nesting-depth
   background-color: $white;
   display: flex;
@@ -274,6 +276,12 @@ $color-focus: #9d9c9a;
     iframe {
       margin: .25em 0 1em 0;
       width: 100%;
+      max-width: 720px;
+      max-height: 405px;
+      
+      @media only screen and (max-width: $breakpoint-medium) {
+        max-height:auto;
+      }
     }
 
     dl {
@@ -305,19 +313,6 @@ $color-focus: #9d9c9a;
   // sass-lint:enable nesting-depth
 }
 
-.documentation__nav {
-    padding: 10px 20px;
-
-    & > ul > li {
-        padding: 7px 0 0 0;
-        border-bottom: none;
-
-        & > a {
-            font-size: 1em;
-        }
-    }
-}
-
 // Make main section fill the vertical space (sticky footer)
 .docs {
   display: flex;
@@ -331,6 +326,34 @@ $color-focus: #9d9c9a;
   margin: 0;
 }
 
-.documentation__footer {
-    color: #777;
+.documentation__nav {
+    padding: 10px 20px;
+
+    & > ul > li {
+        padding: 7px 0 0 0;
+        border-bottom: none;
+
+        & > a {
+            font-size: 1em;
+        }
+    }
 }
+
+.documentation__header, .documentation__footer {
+    border-style: solid;
+    border-color: #cdcdcd;
+    padding: 2rem 40px;
+
+    h1 {
+        margin-bottom: 0;
+    }
+}
+
+.documentation__header {
+    border-bottom-width: 1px;
+}
+
+.documentation__footer {
+    border-top-width: 1px;
+}
+

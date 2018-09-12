@@ -50,8 +50,9 @@
 
 .p-footer {
   $color-mid-dark: $warm-grey;
-  background: $light-grey;
   padding: 2rem 20px;
+  max-width: $site-max-width;
+  margin: 0 auto;
 
   .row {
     padding: 0;
@@ -149,4 +150,5 @@
 .footer-wrapper {
   -webkit-box-shadow: inset 0 2px 2px -1px #cdcdcd;
   box-shadow: inset 0 2px 2px -1px #cdcdcd;
+  background: $light-grey;
 }

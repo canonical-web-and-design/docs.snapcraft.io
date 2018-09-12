@@ -5,14 +5,15 @@
     <nav class="documentation__nav">
       {{ nav_html | safe }}
     </nav>
-    <main class="documentation__content">
-      <h1 id="introduction">{{ title }}</h1>
-      {{ body_html | safe }}
-      <br />
-      <hr />
-      <br />
-      <section class="documentation__footer">
-        <p>Help improve this document <a href="{{ forum_link }}">in the forum.</a></p>
+    <main>
+      <header class="documentation__header">
+        <h1 id="introduction">{{ title }}</h1>
+      </header>
+      <div class="documentation__content">
+        {{ body_html | safe }}
+      </div>
+      <footer class="documentation__footer">
+        <p>Help improve this document <a href="{{ forum_link }}">in the forum</a>.</p>
         <p>Last updated {{ updated }}.</p>
       </section>
     </main>
