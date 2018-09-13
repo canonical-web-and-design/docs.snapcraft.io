@@ -329,6 +329,21 @@ $color-focus: #9d9c9a;
 .documentation__nav {
     padding: 10px 20px;
 
+    h3 {
+        margin-top: 0;
+        padding-top: 1rem;
+        border-top: 1px solid #cdcdcd;
+    }
+
+    h3:first-child {
+        border: none;
+        padding-top: 0.5rem;
+    }
+
+    & > ul {
+        padding-bottom: 1rem;
+    }
+
     & > ul > li {
         padding: 7px 0 0 0;
         border-bottom: none;
@@ -355,5 +370,6 @@ $color-focus: #9d9c9a;
 
 .documentation__footer {
     border-top-width: 1px;
+    color: #666;
 }
 
