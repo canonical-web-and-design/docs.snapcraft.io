@@ -50,6 +50,10 @@ pre {
   }
 }
 
+code {
+  white-space: normal;
+}
+
 blockquote {
   & > :last-child {
     margin-bottom: 0;
