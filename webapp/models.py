@@ -71,19 +71,26 @@ class DiscourseDocs:
         frontpage = self.parse_topic(topic)
 
         # Split HTML into nav and body
-        frontpage_html = frontpage["body_html"]
-        frontpage_soup = BeautifulSoup(frontpage_html, features="html.parser")
-        frontpage_splitpoint = frontpage_soup.find(
-            re.compile("^h[1-6]$"), text="Content"
-        )
-        content_elements = frontpage_splitpoint.fetchPreviousSiblings()
-        nav_elements = frontpage_splitpoint.fetchNextSiblings()
+        soup = BeautifulSoup(frontpage["body_html"], features="html.parser")
+        splitpoint = soup.find(re.compile("^h[1-6]$"), text="Content")
 
-        # Update frontpage
-        frontpage["body_html"] = "\n".join(
-            map(str, reversed(content_elements))
-        )
-        nav_html = "\n".join(map(str, nav_elements))
+        if splitpoint:
+            body_elements = splitpoint.fetchPreviousSiblings()
+            frontpage["body_html"] = "\n".join(
+                map(str, reversed(body_elements))
+            )
+
+            nav_elements = splitpoint.fetchNextSiblings()
+            nav_html = "\n".join(map(str, nav_elements))
+        else:
+            nav_html = (
+                "<p><em>"
+                "Error: Failed to parse navigation from"
+                f' <a href="{frontpage["forum_link"]}">'
+                "the frontpage topic</a>."
+                " Please check the format."
+                "</p></em>"
+            )
 
         return frontpage, nav_html
 
