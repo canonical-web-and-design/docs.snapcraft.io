@@ -1,21 +1,35 @@
 {% extends "base.html" %}
 
 {% block body %}
-  <div class="row documentation no-border">
-    <nav class="documentation__nav">
-      {{ nav_html | safe }}
-    </nav>
-    <main>
-      <header class="documentation__header">
-        <h1 id="introduction">{{ title }}</h1>
-      </header>
-      <div class="documentation__content">
+  <aside class="p-sidebar" id="navigation">
+    <div class="p-sidebar__banner u-hide--medium u-hide--large">
+      <i class="p-sidebar__toggle p-icon--menu"></i>
+    </div>
+    <div class="p-sidebar__content u-hide--small">
+      <nav class="p-sidebar-nav">
+        {{ nav_html | safe }}
+      </nav>
+    </div>
+  </aside>
+
+  <main class="p-content" id="main-content">
+    <div class="p-strip--light is-shallow">
+      <div class="p-content__row">
+        <h1 class="u-no-margin--bottom">{{ title }}</h1>
+      </div>
+    </div>
+
+    <div class="p-strip is-shallow">
+      <div class="p-content__row">
         {{ body_html | safe }}
       </div>
-      <footer class="documentation__footer">
+    </div>
+
+    <div class="p-strip--light is-shallow document-footer">
+      <div class="p-content__row">
         <p>Help improve this document <a href="{{ forum_link }}">in the forum</a>.</p>
         <p>Last updated {{ updated }}.</p>
-      </section>
-    </main>
-  </div>
+      </div>
+    </div>
+  </main>
 {% endblock %}

@@ -31,14 +31,14 @@ if not app.debug:
 def page_not_found(e):
     frontpage, nav_html = discourse.get_frontpage()
 
-    return flask.render_template("404.html", navigation_html=nav_html), 404
+    return flask.render_template("404.html", nav_html=nav_html), 404
 
 
 @app.errorhandler(410)
 def page_deleted(e):
     frontpage, nav_html = discourse.get_frontpage()
 
-    return (flask.render_template("410.html", navigation_html=nav_html), 410)
+    return flask.render_template("410.html", nav_html=nav_html), 410
 
 
 @app.errorhandler(500)

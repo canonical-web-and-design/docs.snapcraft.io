@@ -1,42 +1,73 @@
 @charset "utf-8";
 
-// Import the vanilla framework - https://github.com/ubuntudesign/vanilla-framework
-@import "../../node_modules/vanilla-framework/scss/vanilla";
+// Settings
+// ===
 
-// Run the vanilla framework
+// colour definitions
+$color-brand: #00302f; // TODO: this is a temprary brand colour
+$color-accent: $color-brand;
+$color-navigation-background: #252525;
+
+// Increase paragraph max-width to accommodate iframes
+$p-max-width: 52em;
+
+// Custom docs styling
+$breakpoint-medium: 900px;
+$grid-max-width: 64.875rem;
+$content-padding: 0 5%;
+$sidebar-width: 18rem;
+$toc-width: 12rem;
+
+// Imports
+// ===
+
+// vanilla patterns
+@import 'vanilla-framework/scss/vanilla';
 @include vanilla;
 
-// Custom options
-$site-max-width:   1038px;
-$navigation-width: 270px;
-$color-navigation-background: #252525;
-$light-mid-grey:   #d4d4d4;
-$ubuntu-orange:    #dd4814;
-$color-link:       #007aa6;
+// Overrides from snapcraft.io
+@import 'snapcraft_p-navigation';
+@include snapcraft-p-navigation;
+@import 'snapcraft_footer';
+@include snapcraft-footer;
+@import 'patterns_social-icons';
+@include p-social-icons;
 
-@import "helpers";
-@import "base";
-@import "header";
-@import "documentation";
-@import "inline-logos";
-@import "highlight";
-@import "footer";
+// Overrides for docs layout
+@import 'vf-overrides';
 
-@import "command-line";
+// Modules
+@import 'hljs-default';
 
-.documentation__content pre {
-  @extend .code-block !optional;
-  @extend .command-line !optional;
-
-  border: 1px solid #cdcdcd;
+// Custom styles
+// ===
+pre {
+  padding: 0;
 
   code {
-    color: inherit;
+    padding: 0.5rem 1rem;
+    display: block;
   }
 }
 
-// This fixes https://github.com/canonical-docs/snappy-docs/issues/393
-// When code elements are within a heading, the font-size should be inherited.
-code {
-  font-size: inherit;
+blockquote {
+  & > :last-child {
+    margin-bottom: 0;
+  }
+
+  padding-bottom: 0.4rem;
+  margin-bottom: 1.1rem;
+}
+
+.docs-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.document-footer {
+  color: #666;
+}
+
+.emoji {
+  height: 1rem;
 }

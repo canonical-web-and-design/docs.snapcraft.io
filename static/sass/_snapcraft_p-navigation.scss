@@ -1,0 +1,117 @@
+@mixin snapcraft-p-navigation {
+  $navigation-border-color: rgba(255, 255, 255, .2);
+  $navigation-hover-color: rgba(0, 0, 0, .92);
+  $navigation-highlight-color: rgba(250, 90, 64, 1);
+
+  .p-navigation {
+    z-index: 100; // appear over channel map
+
+    // FIXME: workaround for https://github.com/vanilla-framework/vanilla-framework/issues/1892
+    .p-navigation__banner {
+      flex-basis: auto;
+    }
+
+    // custom styles for dark header with hover
+    .p-navigation__link {
+      .is-selected {
+        background: $navigation-hover-color;
+        box-shadow: 0 -3px 0 $navigation-highlight-color inset;
+      }
+
+      .p-icon--user {
+        margin-right: $sp-small;
+      }
+    }
+
+    // right aligned sign-in navigation
+    .p-navigation__links--right {
+      @extend .p-navigation__links; // sass-lint:disable-line placeholder-in-extend
+    }
+
+    @media (min-width: $breakpoint-navigation-threshold + 1) {
+      .p-navigation__links--right {
+        margin-left: auto; // align to right in flexbox parent
+        margin-right: 20px; // align with the grid
+      }
+    }
+
+    // custom navigation dropdown
+    // inspired heavily by MAAS dropdown:
+    // https://github.com/maas/maas/blob/master/src/maasserver/static/scss/_patterns_navigation.scss
+    .p-dropdown {
+      @media (min-width: $breakpoint-navigation-threshold + 1) {
+        height: 3rem; // to align with header height
+        position: relative;
+
+        .p-dropdown__menu {
+          display: none;
+          position: absolute;
+          right: 0;
+          white-space: nowrap;
+
+          &[aria-hidden="false"] {
+            display: block;
+          }
+        }
+      }
+
+      .p-icon--chevron {
+        $chevron-size: map-get($icon-sizes, accordion);
+
+        height: $chevron-size;
+        margin-top: -($chevron-size / 2); // half of the height
+        position: absolute;
+        right: $chevron-size;
+        top: 50%;
+        width: $chevron-size;
+      }
+
+      [aria-expanded="true"] {
+        .p-icon--chevron {
+          transform: rotate(180deg);
+        }
+      }
+    }
+
+    // making it specific enough to override Vanilla selectors :(
+    .p-navigation__links .p-navigation__link.p-dropdown {
+      @media (max-width: $breakpoint-navigation-threshold) {
+        border: 0;
+      }
+    }
+
+    // making it specific enough to override Vanilla selectors :(
+    .p-navigation__links .p-navigation__link .p-dropdown__toggle {
+      display: none;
+      max-width: 200px;
+      overflow: hidden;
+      padding-right: $sp-x-large;
+      position: relative;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+
+      @media (min-width: $breakpoint-navigation-threshold + 1) {
+        display: block;
+      }
+
+      @media (min-width: $breakpoint-large) {
+        max-width: 300px;
+      }
+    }
+
+    // making it specific enough to override Vanilla selectors :(
+    .p-navigation__links .p-dropdown__menu {
+      background-color: $color-navigation-background;
+
+      margin: 0;
+      padding: 0;
+
+      .p-navigation__link {
+        border-left: 0;
+        float: none;
+        width: 100%;
+      }
+    }
+  }
+
+}

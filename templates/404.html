@@ -3,22 +3,31 @@
 {% block title %}404 - page not found error{% endblock %}
 
 {% block body %}
-  <div class="row documentation no-border">
-    {% if navigation_html %}
-      <nav class="documentation__nav">
-        {{ navigation_html | safe }}
+  <aside class="p-sidebar" id="navigation">
+    <div class="p-sidebar__banner u-hide--medium u-hide--large">
+      <i class="p-sidebar__toggle p-icon--menu"></i>
+    </div>
+    <div class="p-sidebar__content u-hide--small">
+      <nav class="p-sidebar-nav">
+        {{ nav_html | safe }}
       </nav>
-    {% endif %}
-    <main class="documentation__content">
-      <div class="col-6 u-vertically-center u-align--center">
-          <img src="https://assets.ubuntu.com/v1/bcdcf2c8-image-404.svg?w=365" alt="Error owl" width="365" />
-        </div>
-        <div class="col-6 u-vertically-center">
-          <div>
-            <h1>404: Page not found</h1>
-            <p class="p-heading--four">{{ message or "Sorry, we couldn't find that page." }}</p>
-          </div>
-        </div>
-    </main>
-  </div>
+    </div>
+  </aside>
+
+  <main class="p-content" id="main-content">
+    <div class="p-strip--light is-shallow">
+      <div class="p-content__row">
+        <h1 class="u-no-margin--bottom" style="line-height: 100px;">
+          <img style="float: right; vertical-align: middle" width="100" src="https://assets.ubuntu.com/v1/bcdcf2c8-image-404.svg" alt="Error owl" />
+          404: Page not found
+        </h1>
+      </div>
+    </div>
+
+    <div class="p-strip is-shallow">
+      <div class="p-content__row">
+        <p class="p-heading--four">{{ message or "Sorry, we couldn't find that page." }}</p>
+      </div>
+    </div>
+  </main>
 {% endblock %}
