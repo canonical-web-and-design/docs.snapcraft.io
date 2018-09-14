@@ -87,6 +87,23 @@ class DiscourseDocs:
 
         return frontpage, nav_html
 
+    def process_html(self, html):
+        """
+        Post-process the HTML output from Discourse to
+        remove 'NOTE TO EDITORS' sections
+        """
+
+        soup = BeautifulSoup(html, features="html.parser")
+        notes_to_editors_spans = soup.find_all(text="NOTE TO EDITORS")
+
+        for span in notes_to_editors_spans:
+            container = span.parent.parent.parent.parent
+
+            if container.name == 'aside' and 'quote' in container.attrs['class']:
+                container.decompose()
+
+        return soup.prettify()
+
     def get_document(self, path):
         """
         Retrieve and return relevant data about a document:
@@ -100,5 +117,7 @@ class DiscourseDocs:
         if f"/t/{path}" != document["path"]:
             topic = self.get_topic(path)
             document = self.parse_topic(topic)
+
+        document["body_html"] = self.process_html(document["body_html"])
 
         return document, nav_html
