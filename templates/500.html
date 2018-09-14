@@ -1,13 +1,20 @@
 {% extends "base.html" %}
 {% block title %}500 - server error{% endblock %}
 {% block body %}
-  <div class="col-6 u-vertically-center u-align--center">
-    <img src="https://assets.ubuntu.com/v1/bcdcf2c8-image-404.svg?w=365" alt="Error owl" width="365" />
-  </div>
-  <div class="col-6 u-vertically-center">
-    <div>
-      <h1>500: Server error</h1>
-      <p class="p-heading--four">Something&rsquo;s gone wrong, try reloading.</p>
+  <main class="p-content" id="main-content">
+    <div class="p-strip--light is-shallow">
+      <div class="p-content__row">
+        <h1 class="u-no-margin--bottom" style="line-height: 100px;">
+          <img style="float: right; vertical-align: middle" width="100" src="https://assets.ubuntu.com/v1/bcdcf2c8-image-404.svg" alt="Error owl" />
+          500: Server error
+        </h1>
+      </div>
     </div>
-  </div>
+
+    <div class="p-strip is-shallow">
+      <div class="p-content__row">
+        <p class="p-heading--four">{{ message or "Something's gone wrong, try reloading." }}</p>
+      </div>
+    </div>
+  </main>
 {% endblock %}
