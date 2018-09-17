@@ -1,0 +1,47 @@
+.l-docs {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 64.875rem;
+  margin: 0 auto;
+}
+
+.l-docs-sidebar {
+  border-right: $border;
+  flex: 0 0 $sidebar-width;
+
+  @supports (position: sticky) {
+    height: 100vh;
+    overflow-y: scroll;
+    position: sticky;
+    top: 0;
+  }
+
+  @media only screen and (max-width: $breakpoint-navigation-threshold) {
+    border-bottom: $border;
+    border-right: 0;
+    flex: auto;
+    height: inherit;
+    position: static;
+    overflow: hidden;
+    width: 100%;
+  }
+}
+
+.l-docs-content {
+  margin-top: 0;
+  flex: 5;
+
+  @media only screen and (max-width: $breakpoint-navigation-threshold) {
+    flex: auto;
+  }
+}
+
+.l-docs-row {
+  @extend .row;
+  margin-left: inherit;
+  padding: $content-padding;
+
+  @media only screen and (max-width: $breakpoint-navigation-threshold) {
+    padding-left: $sph-inter--expanded;
+  }
+}

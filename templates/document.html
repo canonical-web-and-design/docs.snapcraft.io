@@ -1,34 +1,32 @@
 {% extends "base.html" %}
 
 {% block body %}
-  <aside class="p-sidebar" id="navigation">
-    <div class="p-sidebar__banner u-hide--medium u-hide--large">
-      <i class="p-sidebar__toggle p-icon--menu"></i>
-    </div>
-    <div class="p-sidebar__content u-hide--small">
-      <nav class="p-sidebar-nav">
-        {{ nav_html | safe }}
-      </nav>
-    </div>
+  <aside class="l-docs-sidebar" id="navigation">
+    <i class="p-sidenav__toggle p-icon--menu u-hide u-show--small"></i>
+    <nav class="p-sidenav__body u-hide--small">
+      {{ nav_html | safe }}
+    </nav>
   </aside>
 
-  <main class="p-content" id="main-content">
+  <main class="l-docs-content" id="main-content">
     <div class="p-strip--light is-shallow">
-      <div class="p-content__row">
+      <div class="l-docs-row">
         <h1 class="u-no-margin--bottom">{{ title }}</h1>
       </div>
     </div>
 
     <div class="p-strip is-shallow">
-      <div class="p-content__row">
+      <div class="l-docs-row">
         {{ body_html | safe }}
       </div>
-    </div>
 
-    <div class="p-strip--light is-shallow document-footer">
-      <div class="p-content__row">
-        <p>Help improve this document <a href="{{ forum_link }}">in the forum</a>.</p>
-        <p>Last updated {{ updated }}.</p>
+      <div class="l-docs-row">
+        <div class="p-notification--information">
+          <div class="p-notification__response">
+            <p>Help improve this document <a href="{{ forum_link }}">in the forum</a>.</p>
+            <p>Last updated {{ updated }}.</p>
+          </div>
+        </div>
       </div>
     </div>
   </main>

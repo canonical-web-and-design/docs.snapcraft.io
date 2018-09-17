@@ -3,21 +3,17 @@
 {% block title %}410 - page removed{% endblock %}
 
 {% block body %}
-  <aside class="p-sidebar" id="navigation">
-    <div class="p-sidebar__banner u-hide--medium u-hide--large">
-      <i class="p-sidebar__toggle p-icon--menu"></i>
-    </div>
-    <div class="p-sidebar__content u-hide--small">
-      <nav class="p-sidebar-nav">
-        {{ nav_html | safe }}
-      </nav>
-    </div>
+  <aside class="l-docs-sidebar" id="navigation">
+    <i class="p-sidenav__toggle p-icon--menu u-hide--medium u-hide--large"></i>
+    <nav class="p-sidenav__body u-hide--small">
+      {{ nav_html | safe }}
+    </nav>
   </aside>
 
-  <main class="p-content" id="main-content">
+  <main class="l-docs-content" id="main-content">
     <div class="p-strip--light is-shallow">
-      <div class="p-content__row">
-        <h1 class="u-no-margin--bottom" style="line-height: 100px;">
+      <div class="l-docs-row">
+        <h1 style="line-height: 100px" class="u-no-margin--bottom">
           <img style="float: right; vertical-align: middle" width="100" src="https://assets.ubuntu.com/v1/bcdcf2c8-image-404.svg" alt="Error owl" />
           410: Page deleted
         </h1>
@@ -25,7 +21,7 @@
     </div>
 
     <div class="p-strip is-shallow">
-      <div class="p-content__row">
+      <div class="l-docs-row">
         <p class="p-heading--four">{{ message or "This page has been removed." }}</p>
       </div>
     </div>
