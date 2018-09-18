@@ -12,7 +12,6 @@ $color-navigation-background: #252525;
 $p-max-width: 52em;
 
 // Custom docs styling
-$breakpoint-medium: 900px;
 $grid-max-width: 64.875rem;
 $content-padding: 0 5%;
 $sidebar-width: 18rem;
@@ -33,27 +32,24 @@ $toc-width: 12rem;
 @import 'patterns_social-icons';
 @include p-social-icons;
 
-// Overrides for docs layout
-@import 'vf-overrides';
+// Local custom elements
+@import 'layout_docs';
+@import 'patterns_sidenav';
 
 // Modules
 @import 'hljs-default';
 
-// Custom styles
+// Vanilla fixes
 // ===
-pre {
-  padding: 0;
 
-  code {
-    padding: 0.5rem 1rem;
-    display: block;
-  }
+// Fix for long words overflowing to create vertical scrollbars
+// https://github.com/vanilla-framework/vanilla-framework/issues/1985
+p, li {
+  word-break: break-word;
 }
 
-code {
-  white-space: normal;
-}
-
+// Fix Vanilla <blockquote> spacing
+// https://github.com/vanilla-framework/vanilla-framework/issues/1988
 blockquote {
   & > :last-child {
     margin-bottom: 0;
@@ -63,15 +59,16 @@ blockquote {
   margin-bottom: 1.1rem;
 }
 
-.docs-container {
-  display: flex;
-  flex-wrap: wrap;
+// Reset HighlightJS styling for <code> blocks
+// (they clash with Vanilla styling)
+// https://github.com/vanilla-framework/vanilla-framework/issues/1987
+.hljs {
+  padding: 0;
+  background: none;
 }
 
-.document-footer {
-  color: #666;
-}
-
+// Discourse adds "emoji" <img>s, which are huge
+// They need to be constrained
 .emoji {
   height: 1rem;
 }

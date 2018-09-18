@@ -39,8 +39,8 @@
         // Run when DOM is ready...
         document.addEventListener("DOMContentLoaded", function(event) {
           // Toggle mobile sidebar nav
-          var toggle = document.querySelector('.p-sidebar__toggle');
-          var sidebarContent = document.querySelector('.p-sidebar__content');
+          var toggle = document.querySelector('.p-sidenav__toggle');
+          var sidebarContent = document.querySelector('.p-sidenav__body');
 
           toggle.addEventListener('click', function(e) {
             toggle.classList.toggle('p-icon--menu');
@@ -49,7 +49,7 @@
           });
 
           // Add active links to active nav item
-          document.querySelectorAll('.p-sidebar-nav ul a').forEach(function(anchor) {
+          document.querySelectorAll('.p-sidenav__body ul a').forEach(function(anchor) {
             if (anchor.pathname == location.pathname) {
               anchor.classList.add('is-active');
             }
@@ -76,12 +76,6 @@
           <a href="#navigation-closed" class="p-navigation__toggle--close" title="close menu">Close menu</a>
         </div>
         <nav class="p-navigation__nav">
-          <form id="search" class="p-search-box" action="https://www.ubuntu.com/search">
-            <input type="search" class="p-search-box__input" name="q" placeholder="Search snap docs">
-            <input type="hidden" name="domain" value="docs.snapcraft.io" />
-            <button type="reset" class="p-search-box__reset u-no-margin--right" alt="reset"><i class="p-icon--close"></i></button>
-            <button type="submit" class="p-search-box__button" alt="search"><i class="p-icon--search"></i></button>
-          </form>
           <span class="u-off-screen">
             <a href="#main-content">Jump to main content</a>
           </span>
@@ -113,7 +107,7 @@
       </div>
     </header>
 
-    <div class="docs-container" style="max-width: 64.875rem; margin: 0 auto;">
+    <div class="l-docs">
       {% block body %}{% endblock %}
     </div>
 

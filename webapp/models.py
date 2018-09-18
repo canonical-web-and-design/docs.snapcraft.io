@@ -76,12 +76,10 @@ class DiscourseDocs:
 
         if splitpoint:
             body_elements = splitpoint.fetchPreviousSiblings()
-            frontpage["body_html"] = "\n".join(
-                map(str, reversed(body_elements))
-            )
+            frontpage["body_html"] = "".join(map(str, reversed(body_elements)))
 
             nav_elements = splitpoint.fetchNextSiblings()
-            nav_html = "\n".join(map(str, nav_elements))
+            nav_html = "".join(map(str, nav_elements))
         else:
             nav_html = (
                 "<p><em>"
@@ -106,10 +104,13 @@ class DiscourseDocs:
         for span in notes_to_editors_spans:
             container = span.parent.parent.parent.parent
 
-            if container.name == 'aside' and 'quote' in container.attrs['class']:
+            if (
+                container.name == "aside"
+                and "quote" in container.attrs["class"]
+            ):
                 container.decompose()
 
-        return soup.prettify()
+        return str(soup)
 
     def get_document(self, path):
         """
