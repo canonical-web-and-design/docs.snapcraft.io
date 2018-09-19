@@ -6,7 +6,7 @@ import responses
 
 # Local
 from webapp import models
-from webapp.tests.fixtures.discourse_responses import (
+from webapp.tests.fixtures.snapcraft_forum_responses import (
     documentation_outline_topic,
     frontpage_by_id,
     getting_started_wiki,
