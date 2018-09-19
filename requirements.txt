@@ -10,3 +10,6 @@ python-dateutil==2.7.3
 statsd<3.3.0
 gunicorn[gevent]
 talisker==0.9.14
+black==18.6b4
+responses==0.9.0
+
