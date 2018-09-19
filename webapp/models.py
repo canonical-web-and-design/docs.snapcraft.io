@@ -6,8 +6,6 @@ import dateutil.parser
 from bs4 import BeautifulSoup
 from requests.exceptions import HTTPError
 from urllib.parse import urlparse
-
-# Local
 from canonicalwebteam.http import CachedSession
 
 
