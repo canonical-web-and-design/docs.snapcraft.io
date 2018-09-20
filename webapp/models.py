@@ -38,7 +38,9 @@ class DiscourseDocs:
     from a Discourse installation through the API
     """
 
-    def __init__(self, base_url, frontpage_id, session_class=CachedSession):
+    def __init__(
+        self, base_url, frontpage_id, session=CachedSession(expire_after=300)
+    ):
         """
         @param base_url: The Discourse URL (e.g. https://discourse.example.com)
         @param frontpage_id: The ID of the frontpage topic in Discourse.
@@ -47,7 +49,7 @@ class DiscourseDocs:
 
         self.base_url = base_url.rstrip("/")
         self.frontpage_id = frontpage_id
-        self.session = CachedSession(expire_after=300)
+        self.session = session
 
     def __del__(self):
         self.session.close()

@@ -1,5 +1,5 @@
 canonicalwebteam.http==0.1.4
-requests-cache==0.4.13
+requests-mock==1.5.2
 pyyaml==3.13
 yamlordereddictloader==0.4.0
 Flask==1.0.2
@@ -12,4 +12,3 @@ gunicorn[gevent]
 talisker==0.9.14
 black==18.6b4
 responses==0.9.0
-
