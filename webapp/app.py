@@ -3,12 +3,15 @@ from urllib.parse import urlparse, urlunparse, unquote
 
 # Third-party
 import flask
-import humanize
 import prometheus_flask_exporter
 from requests.exceptions import HTTPError
 
 # Local
-from webapp.models import DiscourseDocs, RedirectFoundError
+from webapp.models import (
+    DiscourseDocs,
+    NavigationParseError,
+    RedirectFoundError,
+)
 
 
 discourse = DiscourseDocs(
@@ -29,14 +32,20 @@ if not app.debug:
 
 @app.errorhandler(404)
 def page_not_found(e):
-    frontpage, nav_html = discourse.get_frontpage()
+    try:
+        frontpage, nav_html = discourse.parse_frontpage()
+    except NavigationParseError as nav_error:
+        nav_html = f"<p>{str(nav_error)}</p>"
 
     return flask.render_template("404.html", nav_html=nav_html), 404
 
 
 @app.errorhandler(410)
 def page_deleted(e):
-    frontpage, nav_html = discourse.get_frontpage()
+    try:
+        frontpage, nav_html = discourse.parse_frontpage()
+    except NavigationParseError as nav_error:
+        nav_html = f"<p>{str(nav_error)}</p>"
 
     return flask.render_template("410.html", nav_html=nav_html), 410
 
@@ -68,9 +77,11 @@ def homepage():
     Redirect to the frontpage topic
     """
 
-    frontpage, nav_html = discourse.get_frontpage()
+    frontpage, nav_html = discourse.parse_frontpage()
 
-    return flask.redirect(frontpage["path"])
+    forum_url_parts = urlparse(frontpage["forum_link"])
+
+    return flask.redirect(forum_url_parts.path)
 
 
 @app.route("/t/<path:path>")
@@ -81,12 +92,15 @@ def document(path):
         return flask.redirect(redirect_error.redirect_path)
     except HTTPError as http_error:
         flask.abort(http_error.response.status_code)
+    except NavigationParseError as nav_error:
+        document = nav_error.document
+        nav_html = f"<p>{str(nav_error)}</p>"
 
     return flask.render_template(
         "document.html",
         title=document["title"],
         body_html=document["body_html"],
         forum_link=document["forum_link"],
-        updated=humanize.naturaltime(document["updated"].replace(tzinfo=None)),
+        updated=document["updated"],
         nav_html=nav_html,
     )

@@ -3,11 +3,10 @@ import re
 
 # Third-party
 import dateutil.parser
+import humanize
 from bs4 import BeautifulSoup
 from requests.exceptions import HTTPError
 from urllib.parse import urlparse
-
-# Local
 from canonicalwebteam.http import CachedSession
 
 
@@ -22,13 +21,26 @@ class RedirectFoundError(HTTPError):
         self.redirect_path = url_parts.path.rstrip(".json")
 
 
+class NavigationParseError(Exception):
+    """
+    Indicates a failure to extract the navigation from
+    the frontpage content
+    """
+
+    def __init__(self, document, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.document = document
+
+
 class DiscourseDocs:
     """
     A basic model class for retrieving Documentation content
     from a Discourse installation through the API
     """
 
-    def __init__(self, base_url, frontpage_id, session_class=CachedSession):
+    def __init__(
+        self, base_url, frontpage_id, session=CachedSession(expire_after=300)
+    ):
         """
         @param base_url: The Discourse URL (e.g. https://discourse.example.com)
         @param frontpage_id: The ID of the frontpage topic in Discourse.
@@ -37,62 +49,76 @@ class DiscourseDocs:
 
         self.base_url = base_url.rstrip("/")
         self.frontpage_id = frontpage_id
-        self.session = CachedSession(expire_after=300)
+        self.session = session
 
-    def get_topic(self, path):
+    def __del__(self):
+        self.session.close()
+
+    def get_document(self, path):
         """
-        Retrieve topic object by path
+        Retrieve and return relevant data about a document:
+        - Title
+        - HTML content
+        - Navigation content
         """
 
-        response = self.session.get(
-            f"{self.base_url}/t/{path}.json", allow_redirects=False
-        )
-        response.raise_for_status()
+        parse_error = None
 
-        if response.status_code >= 300:
-            raise RedirectFoundError(response=response)
+        try:
+            frontpage, nav_html = self.parse_frontpage()
+        except NavigationParseError as err:
+            parse_error = err
+            frontpage = parse_error.document
 
-        return response.json()
+        if f"{self.base_url}/t/{path}" == frontpage["forum_link"]:
+            document = frontpage
+        else:
+            document = self._parse_document_topic(self._get_topic(path))
 
-    def parse_topic(self, topic):
-        return {
-            "title": topic["title"],
-            "body_html": topic["post_stream"]["posts"][0]["cooked"],
-            "updated": dateutil.parser.parse(
-                topic["post_stream"]["posts"][0]["updated_at"]
-            ),
-            "forum_link": f"{self.base_url}/t/{topic['slug']}/{topic['id']}",
-            "path": f"/t/{topic['slug']}/{topic['id']}",
-        }
+        if parse_error:
+            parse_error.document = document
+            raise parse_error
 
-    def get_frontpage(self):
+        return document, nav_html
+
+    def parse_frontpage(self):
+        """
+        Parse the frontpage document topic to extract the Navigation markup
+        from it
+        """
+
         # Get topic data
-        topic = self.get_topic(self.frontpage_id)
-        frontpage = self.parse_topic(topic)
+        frontpage_topic = self._get_topic(self.frontpage_id)
+        frontpage_document = self._parse_document_topic(frontpage_topic)
 
         # Split HTML into nav and body
-        soup = BeautifulSoup(frontpage["body_html"], features="html.parser")
+        soup = BeautifulSoup(
+            frontpage_document["body_html"], features="html.parser"
+        )
         splitpoint = soup.find(re.compile("^h[1-6]$"), text="Content")
 
         if splitpoint:
             body_elements = splitpoint.fetchPreviousSiblings()
-            frontpage["body_html"] = "".join(map(str, reversed(body_elements)))
+            frontpage_document["body_html"] = "".join(
+                map(str, reversed(body_elements))
+            )
 
             nav_elements = splitpoint.fetchNextSiblings()
             nav_html = "".join(map(str, nav_elements))
         else:
-            nav_html = (
-                "<p><em>"
-                "Error: Failed to parse navigation from"
-                f' <a href="{frontpage["forum_link"]}">'
-                "the frontpage topic</a>."
-                " Please check the format."
-                "</p></em>"
+            raise NavigationParseError(
+                frontpage_document,
+                "Error: Failed to parse navigation from "
+                + frontpage_document["forum_link"]
+                + ". Please check the format.",
             )
 
-        return frontpage, nav_html
+        return frontpage_document, nav_html
 
-    def process_html(self, html):
+    # Private helper methods
+    # ===
+
+    def _process_html(self, html):
         """
         Post-process the HTML output from Discourse to
         remove 'NOTE TO EDITORS' sections
@@ -112,20 +138,44 @@ class DiscourseDocs:
 
         return str(soup)
 
-    def get_document(self, path):
+    def _parse_document_topic(self, topic):
         """
-        Retrieve and return relevant data about a document:
-        - Title
-        - HTML content
-        - Navigation content
+        Parse a topic object retrieve from Discourse
+        and return document data:
+        - title: The title
+        - body_html: The HTML content of the initial topic post
+                     (with some post-processing)
+        - updated: A human-readable data, relative to now
+                   (e.g. "3 days ago")
+        - forum_link: The link to the original forum post
         """
 
-        document, nav_html = self.get_frontpage()
+        updated_datetime = dateutil.parser.parse(
+            topic["post_stream"]["posts"][0]["updated_at"]
+        )
 
-        if f"/t/{path}" != document["path"]:
-            topic = self.get_topic(path)
-            document = self.parse_topic(topic)
+        return {
+            "title": topic["title"],
+            "body_html": self._process_html(
+                topic["post_stream"]["posts"][0]["cooked"]
+            ),
+            "updated": humanize.naturaltime(
+                updated_datetime.replace(tzinfo=None)
+            ),
+            "forum_link": f"{self.base_url}/t/{topic['slug']}/{topic['id']}",
+        }
 
-        document["body_html"] = self.process_html(document["body_html"])
+    def _get_topic(self, path):
+        """
+        Retrieve topic object by path
+        """
 
-        return document, nav_html
+        response = self.session.get(
+            f"{self.base_url}/t/{path}.json", allow_redirects=False
+        )
+        response.raise_for_status()
+
+        if response.status_code >= 300:
+            raise RedirectFoundError(response=response)
+
+        return response.json()
