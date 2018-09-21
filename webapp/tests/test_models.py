@@ -57,6 +57,41 @@ class TestDiscourseDocs(unittest.TestCase):
         # Check it communicates the appropriate HTTP status
         self.assertEqual(404, context.exception.response.status_code)
 
+    def test_get_document_broken_nav(self):
+        """
+        Check that, when we request a document that is different
+        from the frontpage document, but the frontpage is set
+        to a topic which doesn't contain a navigation section
+        in the expected format,  that it will raise a NavigationParseError,
+        but still return the requested document as NavigationParseError.document
+        """
+
+        # Set up a Discourse pointing at a badly formatted frontpage
+        broken_discourse = models.DiscourseDocs(
+            base_url="https://forum.snapcraft.io",
+            frontpage_id=3876,
+            session=self.mock_session,
+        )
+
+        # Catch the NavigationParseError
+        with self.assertRaises(models.NavigationParseError) as context:
+            document, nav_html = broken_discourse.get_document(
+                "documentation-outline/3781"
+            )
+
+        # Retrieve the document from the error
+        nav_error = context.exception
+        doc = nav_error.document
+
+        # Check the shape of the document content
+        self.assertEqual(doc["title"], "Documentation outline")
+        self.assertTrue(bool(doc.get("updated")))
+        self.assertTrue("the experimental snap" in doc["body_html"])
+        self.assertEqual(
+            doc["forum_link"],
+            "https://forum.snapcraft.io/t/documentation-outline/3781",
+        )
+
     def test_get_document_topic(self):
         """
         Check that DiscourseDocs.get_document is able to parse
