@@ -9,13 +9,6 @@
   border-right: $border;
   flex: 0 0 $sidebar-width;
 
-  @supports (position: sticky) {
-    height: calc(100vh - 3rem);
-    overflow-y: scroll;
-    position: sticky;
-    top: 0;
-  }
-
   @media only screen and (max-width: $breakpoint-navigation-threshold) {
     border-bottom: $border;
     border-right: 0;
