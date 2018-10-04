@@ -11,7 +11,7 @@ from canonicalwebteam.http import CachedSession
 
 
 # Constants
-DEFAULT_SESSION = CachedSession(expire_after=5, old_data_on_error=True)
+DEFAULT_SESSION = CachedSession(expire_after=300, old_data_on_error=True)
 
 
 class RedirectFoundError(HTTPError):
