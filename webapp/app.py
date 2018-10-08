@@ -5,6 +5,10 @@ from urllib.parse import urlparse, urlunparse, unquote
 import flask
 import prometheus_flask_exporter
 from requests.exceptions import HTTPError
+from canonicalwebteam.yaml_responses.flask import (
+    prepare_redirects,
+    prepare_deleted,
+)
 
 # Local
 from webapp.models import (
@@ -29,6 +33,21 @@ if not app.debug:
     )
     metrics.start_http_server(port=9990, endpoint="/")
 
+# Parse redirects.yaml and permanent-redirects.yaml
+app.before_request(prepare_redirects())
+
+
+def deleted_callback(context):
+    try:
+        frontpage, nav_html = discourse.parse_frontpage()
+    except NavigationParseError as nav_error:
+        nav_html = f"<p>{str(nav_error)}</p>"
+
+    return flask.render_template("410.html", nav_html=nav_html, **context), 410
+
+
+app.before_request(prepare_deleted(view_callback=deleted_callback))
+
 
 @app.errorhandler(404)
 def page_not_found(e):
@@ -41,13 +60,8 @@ def page_not_found(e):
 
 
 @app.errorhandler(410)
-def page_deleted(e):
-    try:
-        frontpage, nav_html = discourse.parse_frontpage()
-    except NavigationParseError as nav_error:
-        nav_html = f"<p>{str(nav_error)}</p>"
-
-    return flask.render_template("410.html", nav_html=nav_html), 410
+def deleted(e):
+    return deleted_callback({})
 
 
 @app.errorhandler(500)

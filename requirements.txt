@@ -1,9 +1,10 @@
+Flask==1.0.2
 canonicalwebteam.http==0.1.6
+canonicalwebteam.yaml_responses[flask]==1.0.1
 requests-mock==1.5.2
 requests-cache==0.4.13
 pyyaml==3.13
 yamlordereddictloader==0.4.0
-Flask==1.0.2
 beautifulsoup4==4.6.3
 prometheus-flask-exporter==0.2.0
 humanize==0.5.1
