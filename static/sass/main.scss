@@ -87,3 +87,20 @@ blockquote {
 p:empty + p:not(.p-muted-heading), p + p:not(.p-muted-heading):empty, p:empty + p:not(.p-muted-heading):empty {
   margin-top: 0;
 }
+
+// Improve heading stylez
+.docs-title, .docs-title[class^='p-strip'] {
+  @media only screen and (min-width: 1030px) {
+    padding-bottom: 0;
+    background-color: transparent;
+  }
+
+  @media only screen and (max-width: 1030px) {
+    padding-bottom: 0;
+    background-color: transparent;
+  }
+}
+.docs-title__heading {
+  padding-bottom: 1rem;
+  border-bottom: 1px solid $color-mid-light;
+}
