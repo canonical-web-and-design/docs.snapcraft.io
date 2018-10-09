@@ -72,3 +72,18 @@ blockquote {
 .emoji {
   height: 1rem;
 }
+
+// Discourse adds "lightbox" markup to images, including "meta" elements.
+// We need to make them look reasonable
+.lightbox-wrapper {
+  padding-top: 0.4rem;
+  margin-bottom: 1.1rem;
+}
+.meta {
+  display: none;
+}
+// Vanilla adds margin-top: -1.1rem, which messes up spacing on empty <p>s
+// https://github.com/vanilla-framework/vanilla-framework/issues/2019
+p:empty + p:not(.p-muted-heading), p + p:not(.p-muted-heading):empty, p:empty + p:not(.p-muted-heading):empty {
+  margin-top: 0;
+}
