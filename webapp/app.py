@@ -43,7 +43,10 @@ def deleted_callback(context):
     except NavigationParseError as nav_error:
         nav_html = f"<p>{str(nav_error)}</p>"
 
-    return flask.render_template("410.html", nav_html=nav_html, **context), 410
+    return (
+        flask.render_template("410.html", nav_html=nav_html, **context),
+        410,
+    )
 
 
 app.before_request(prepare_deleted(view_callback=deleted_callback))

@@ -63,7 +63,8 @@ class TestDiscourseDocs(unittest.TestCase):
         from the frontpage document, but the frontpage is set
         to a topic which doesn't contain a navigation section
         in the expected format,  that it will raise a NavigationParseError,
-        but still return the requested document as NavigationParseError.document
+        but still return the requested document
+        as NavigationParseError.document
         """
 
         # Set up a Discourse pointing at a badly formatted frontpage
