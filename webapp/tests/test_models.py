@@ -39,9 +39,7 @@ class TestDiscourseDocs(unittest.TestCase):
             self.discourse.get_document("configuration-options/87")
 
         # Check the redirect_path points to the right place
-        self.assertEqual(
-            "/t/system-options/87", context.exception.redirect_path
-        )
+        self.assertEqual("/system-options/87", context.exception.redirect_path)
 
     def test_get_document_not_found(self):
         """
@@ -117,7 +115,7 @@ class TestDiscourseDocs(unittest.TestCase):
         # Check the shape of the navigation content
         self.assertTrue("<h3>Publishing</h3>" in topic_nav_html)
         self.assertTrue(
-            '<a href="/t/the-maven-plugin/4282">Maven</a>' in topic_nav_html
+            '<a href="/the-maven-plugin/4282">Maven</a>' in topic_nav_html
         )
 
     def test_get_document_wiki(self):
@@ -145,7 +143,7 @@ class TestDiscourseDocs(unittest.TestCase):
         # Check the shape of the navigation content
         self.assertTrue("<h3>Publishing</h3>" in wiki_nav_html)
         self.assertTrue(
-            '<a href="/t/the-maven-plugin/4282">Maven</a>' in wiki_nav_html
+            '<a href="/the-maven-plugin/4282">Maven</a>' in wiki_nav_html
         )
 
     def test_parse_frontpage_success(self):
@@ -171,7 +169,7 @@ class TestDiscourseDocs(unittest.TestCase):
         # Check the shape of the navigation
         self.assertTrue("<h3>Publishing</h3>" in nav_html)
         self.assertTrue(
-            '<a href="/t/the-maven-plugin/4282">Maven</a>' in nav_html
+            '<a href="/the-maven-plugin/4282">Maven</a>' in nav_html
         )
 
     def test_parse_frontpage_navigation_error(self):

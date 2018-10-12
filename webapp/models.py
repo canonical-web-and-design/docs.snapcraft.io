@@ -22,7 +22,7 @@ class RedirectFoundError(HTTPError):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         url_parts = urlparse(self.response.headers["Location"])
-        self.redirect_path = url_parts.path.rstrip(".json")
+        self.redirect_path = re.sub("/t(/.*).json", r"\1", url_parts.path)
 
 
 class NavigationParseError(Exception):
@@ -107,6 +107,14 @@ class DiscourseDocs:
 
             nav_elements = splitpoint.fetchNextSiblings()
             nav_html = "".join(map(str, nav_elements))
+            nav_soup = BeautifulSoup(nav_html, features="html.parser")
+
+            # Convert links to the form needed in this site
+            for link in nav_soup.find_all("a"):
+                if "href" in link.attrs:
+                    url = link.attrs["href"]
+                    link_match = f"^({self.base_url})?/t(/.*)$"
+                    link.attrs["href"] = re.sub(link_match, r"\2", url)
         else:
             raise NavigationParseError(
                 frontpage_document,
@@ -115,7 +123,7 @@ class DiscourseDocs:
                 + ". Please check the format.",
             )
 
-        return frontpage_document, nav_html
+        return frontpage_document, str(nav_soup)
 
     # Private helper methods
     # ===
@@ -165,6 +173,7 @@ class DiscourseDocs:
                 updated_datetime.replace(tzinfo=None)
             ),
             "forum_link": f"{self.base_url}/t/{topic['slug']}/{topic['id']}",
+            "path": f"/{topic['slug']}/{topic['id']}",
         }
 
     def _get_topic(self, path):

@@ -96,12 +96,10 @@ def homepage():
 
     frontpage, nav_html = discourse.parse_frontpage()
 
-    forum_url_parts = urlparse(frontpage["forum_link"])
-
-    return flask.redirect(forum_url_parts.path)
+    return flask.redirect(frontpage["path"])
 
 
-@app.route("/t/<path:path>")
+@app.route("/<path:path>")
 def document(path):
     try:
         document, nav_html = discourse.get_document(path)
