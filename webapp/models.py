@@ -44,16 +44,32 @@ class NavigationParseError(Exception):
 def _process_html(html):
     """
     Post-process the HTML output from Discourse to
-    remove 'NOTE TO EDITORS' sections
+    remove 'NOTE TO EDITORS' sections.
+
+    We expect these sections to be of the HTML format:
+
+    <aside class="quote no-group">
+      <blockquote>
+        <p>
+          <img title=":construction:" class="emoji" ...>
+          <strong>NOTE TO EDITORS</strong>
+          <img title=":construction:" class="emoji" ...>
+        </p>
+        <p> ... </p>
+      </blockquote>
+    </aside>
     """
 
     soup = BeautifulSoup(html, features="html.parser")
-    notes_to_editors_spans = soup.find_all(text="NOTE TO EDITORS")
+    notes_to_editors_text = soup.find_all(text="NOTE TO EDITORS")
 
     soup = _replace_notifications(soup)
 
-    for span in notes_to_editors_spans:
-        container = span.parent.parent.parent.parent
+    for text in notes_to_editors_text:
+        # If this section is of the expected HTML format,
+        # we should find the <aside> container 4 levels up from
+        # the "NOTE TO EDITORS" text
+        container = text.parent.parent.parent.parent
 
         if container.name == "aside" and "quote" in container.attrs["class"]:
             container.decompose()
