@@ -8,6 +8,7 @@ from bs4 import BeautifulSoup
 from requests.exceptions import HTTPError
 from urllib.parse import urlparse
 from canonicalwebteam.http import CachedSession
+from jinja2 import Template
 
 
 # Constants
@@ -34,6 +35,90 @@ class NavigationParseError(Exception):
     def __init__(self, document, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.document = document
+
+
+# Private helper functions
+# ===
+
+
+def _process_html(html):
+    """
+    Post-process the HTML output from Discourse to
+    remove 'NOTE TO EDITORS' sections.
+
+    We expect these sections to be of the HTML format:
+
+    <aside class="quote no-group">
+      <blockquote>
+        <p>
+          <img title=":construction:" class="emoji" ...>
+          <strong>NOTE TO EDITORS</strong>
+          <img title=":construction:" class="emoji" ...>
+        </p>
+        <p> ... </p>
+      </blockquote>
+    </aside>
+    """
+
+    soup = BeautifulSoup(html, features="html.parser")
+    notes_to_editors_text = soup.find_all(text="NOTE TO EDITORS")
+
+    soup = _replace_notifications(soup)
+
+    for text in notes_to_editors_text:
+        # If this section is of the expected HTML format,
+        # we should find the <aside> container 4 levels up from
+        # the "NOTE TO EDITORS" text
+        container = text.parent.parent.parent.parent
+
+        if container.name == "aside" and "quote" in container.attrs["class"]:
+            container.decompose()
+
+    return str(soup)
+
+
+def _replace_notifications(soup):
+    """
+    Given some BeutifulSoup of a document,
+    replace blockquotes with the appropriate notification markup
+    """
+
+    with open("templates/_notification.html") as notification_file:
+        notification_template = Template(notification_file.read())
+
+    for note in soup.findAll(text=re.compile("ⓘ ")):
+        paragraph = note.parent
+        blockquote = paragraph.parent
+
+        if paragraph.name == "p" and blockquote.name == "blockquote":
+            text_contents = paragraph.encode_contents().decode("utf-8")
+            new_contents = re.sub("^ⓘ ", "", text_contents)
+
+            notification_html = notification_template.render(
+                notification_class="p-notification", contents=new_contents
+            )
+            blockquote.replace_with(
+                BeautifulSoup(notification_html, features="html.parser")
+            )
+
+    for warning in soup.findAll("img", title=":warning:"):
+        paragraph = warning.parent
+        blockquote = paragraph.parent
+
+        if paragraph.name == "p" and blockquote.name == "blockquote":
+            warning.decompose()
+            text_contents = paragraph.encode_contents().decode("utf-8")
+            new_contents = re.sub("^ ", "", text_contents)
+
+            notification_html = notification_template.render(
+                notification_class="p-notification--caution",
+                contents=new_contents,
+            )
+            blockquote.replace_with(
+                BeautifulSoup(notification_html, features="html.parser")
+            )
+
+    return soup
 
 
 class DiscourseDocs:
@@ -128,26 +213,6 @@ class DiscourseDocs:
     # Private helper methods
     # ===
 
-    def _process_html(self, html):
-        """
-        Post-process the HTML output from Discourse to
-        remove 'NOTE TO EDITORS' sections
-        """
-
-        soup = BeautifulSoup(html, features="html.parser")
-        notes_to_editors_spans = soup.find_all(text="NOTE TO EDITORS")
-
-        for span in notes_to_editors_spans:
-            container = span.parent.parent.parent.parent
-
-            if (
-                container.name == "aside"
-                and "quote" in container.attrs["class"]
-            ):
-                container.decompose()
-
-        return str(soup)
-
     def _parse_document_topic(self, topic):
         """
         Parse a topic object retrieve from Discourse
@@ -166,7 +231,7 @@ class DiscourseDocs:
 
         return {
             "title": topic["title"],
-            "body_html": self._process_html(
+            "body_html": _process_html(
                 topic["post_stream"]["posts"][0]["cooked"]
             ),
             "updated": humanize.naturaltime(
