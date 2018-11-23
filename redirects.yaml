@@ -10,7 +10,7 @@ build-snaps/go/?: /go-applications/7818
 build-snaps/hooks/?: /supported-snap-hooks/3795
 build-snaps/java/?: /java-applications/7819
 build-snaps/languages/?: /creating-a-snap/6799
-build-snaps/metadata/?: /the-snapcraft-format/8337
+build-snaps/metadata/?: /snapcraft-app-and-service-metadata/8335
 build-snaps/moos/?: /moos-applications/7820
 build-snaps/node/?: /node-apps/6747
 build-snaps/parts/?: /remote-reusable-parts/4233
