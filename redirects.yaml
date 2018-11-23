@@ -56,6 +56,7 @@ deprecation-notices/dn7/?: /deprecation-notice-7/8407
 deprecation-notices/dn8/?: /deprecation-notice-8/8408 
 deprecation-notices/dn9/?: /deprecation-notice-9/8409 
 reference/channels/?: /channels/551
+reference/env/?: /environment-variables/7983 
 reference/interfaces/?: /interfaces/6154
 reference/plugins.*: /writing-local-plugins/5125
 snaps/?: /
