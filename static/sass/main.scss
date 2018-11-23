@@ -113,23 +113,15 @@ p:empty + p:not(.p-muted-heading), p + p:not(.p-muted-heading):empty, p:empty + 
 
 p {max-width: 48em}
 
-
 /////////////////////////////////////////////////////////////////////////////////
 
 $breakpoint-x-large: 1681px;
-$bp-laptop: 1366px;
-$fontsize-bigscreen-ratio: 18/16;
-$width-base: 1200/16;
-$fontsize-bigscreen: 1rem * $fontsize-bigscreen-ratio;
-@debug $fontsize-bigscreen;
-$width-l:  $width-base * 1rem;
-$width-xl:  1rem * $width-base;
+$width-base: 1200/16 * 1rem;
+$fontsize-bigscreen: 1rem * 18/16;
 $gutters_total: 2 * 1.5 * 1rem;
-//
 
-$width-switch-bp: $breakpoint-x-large;
 html {
-  @media (min-width: $width-switch-bp) {
+  @media (min-width: $breakpoint-x-large) {
     font-size: $fontsize-bigscreen;
   }
 }
@@ -137,11 +129,5 @@ html {
 .row,
 .global-nav__header-row.global-nav__row[style],
 .l-docs {
-  @media(max-width: $width-switch-bp) {
-    max-width: $width-l - $gutters_total!important;
-  }
-
-  @media(min-width: $width-switch-bp) {
-    max-width: $width-xl - $gutters_total!important;
-  }
+    max-width: $width-base - $gutters_total!important;
 }
