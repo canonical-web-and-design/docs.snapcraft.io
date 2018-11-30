@@ -10,6 +10,7 @@ build-snaps/go/?: /go-applications/7818
 build-snaps/hooks/?: /supported-snap-hooks/3795
 build-snaps/java/?: /java-applications/7819
 build-snaps/languages/?: /creating-a-snap/6799
+build-snaps/metadata/?: /snapcraft-app-and-service-metadata/8335
 build-snaps/moos/?: /moos-applications/7820
 build-snaps/node/?: /node-apps/6747
 build-snaps/parts/?: /remote-reusable-parts/4233
@@ -45,7 +46,17 @@ core/install/?: /installing-snapd/6735
 core/interfaces/?: /interfaces/6154
 core/updates/?: /keeping-snaps-up-to-date/7022
 core/usage/?: /getting-started/3876
+deprecation-notices/dn1/?: /deprecation-notice-1/8397
+deprecation-notices/dn2/?: /deprecation-notice-2/8398
+deprecation-notices/dn3/?: /deprecation-notice-3/8403 
+deprecation-notices/dn4/?: /deprecation-notice-4/8404 
+deprecation-notices/dn5/?: /deprecation-notice-5/8405 
+deprecation-notices/dn6/?: /deprecation-notice-6/8406 
+deprecation-notices/dn7/?: /deprecation-notice-7/8407 
+deprecation-notices/dn8/?: /deprecation-notice-8/8408 
+deprecation-notices/dn9/?: /deprecation-notice-9/8409 
 reference/channels/?: /channels/551
+reference/env/?: /environment-variables/7983 
 reference/interfaces/?: /interfaces/6154
 reference/plugins.*: /writing-local-plugins/5125
 snaps/?: /
