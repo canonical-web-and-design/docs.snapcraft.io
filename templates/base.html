@@ -103,6 +103,12 @@
             <li class="p-navigation__link" role="menuitem"><a class="is-selected" href="/">Docs</a></li>
             <li class="p-navigation__link" role="menuitem"><a class="p-link--external" href="https://forum.snapcraft.io/categories">Forum</a></li>
           </ul>
+          <form id="search" class="p-search-box" action="https://www.ubuntu.com/search">
+            <input type="search" class="p-search-box__input" name="q" placeholder="Search Snapcraft docs" required="">
+            <input type="hidden" name="siteSearch" value="docs.snapcraft.io">
+            <button type="reset" class="p-search-box__reset u-no-margin--right" alt="reset"><i class="p-icon--close"></i></button>
+            <button type="submit" class="p-search-box__button" alt="search"><i class="p-icon--search"></i></button>
+          </form>
         </nav>
       </div>
     </header>
