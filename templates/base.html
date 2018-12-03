@@ -107,6 +107,17 @@
       </div>
     </header>
 
+    <section id="search-docs" class="p-strip--image is-shallow snapcraft-banner-background">
+      <div class="row">
+        <form class="p-search-box u-no-margin--bottom" style="box-shadow: none" action="https://www.ubuntu.com/search">
+          <input type="hidden" name="siteSearch" value="docs.snapcraft.io" />
+          <input type="search" class="p-search-box__input" name="q" placeholder="Search documentation" required />
+          <button type="reset" class="p-search-box__reset" alt="reset" style="right: 6.7rem"><i class="p-icon--close"></i></button>
+          <button type="submit" class="p-button--positive u-no-margin--bottom p-link--external" style="margin-left: 1.5rem; width: auto" alt="search">Search</button>
+        </form>
+      </div>
+    </section>
+
     <div class="l-docs">
       {% block body %}{% endblock %}
     </div>
