@@ -5,9 +5,9 @@ from urllib.parse import urlparse, urlunparse, unquote
 import flask
 import prometheus_flask_exporter
 from requests.exceptions import HTTPError
-from canonicalwebteam.yaml_responses.flask import (
-    prepare_redirects,
+from canonicalwebteam.yaml_responses.flask_helpers import (
     prepare_deleted,
+    prepare_redirects,
 )
 
 # Local
