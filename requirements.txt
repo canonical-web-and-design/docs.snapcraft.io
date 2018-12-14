@@ -7,7 +7,7 @@ requests-cache==0.4.13
 pyyaml==3.13
 yamlordereddictloader==0.4.0
 beautifulsoup4==4.6.3
-prometheus-flask-exporter==0.2.0
+prometheus-flask-exporter==0.4.1
 humanize==0.5.1
 python-dateutil==2.7.3
 statsd==3.2.2
