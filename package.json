@@ -4,7 +4,9 @@
     "test-python": "coverage run --source=. -m unittest discover webapp/tests",
     "lint-python": "flake8 webapp && black --check --line-length 79 webapp",
     "lint-scss": "sass-lint static/sass/**/*.scss --verbose --no-exit",
-    "build": "node-sass --include-path node_modules static/sass --output static/css && postcss --use autoprefixer --replace 'static/css/**/*.css'",
+    "build": "yarn run build-css && yarn run build-js",
+    "build-css": "node-sass --include-path node_modules static/sass --output static/css && postcss --use autoprefixer --replace 'static/css/**/*.css'",
+    "build-js": "mkdir -p static/js && cp node_modules/global-nav/dist/index.js static/js/global-nav.js",
     "watch": "watch -p 'static/sass/**/*.scss' -c 'yarn run build'",
     "clean": "rm -rf node_modules yarn-error.log static/css/**/*.css *.log *.sqlite _site/ build/ .jekyll-metadata .bundle",
     "serve": "./entrypoint 0.0.0.0:${PORT}"
@@ -13,11 +15,13 @@
   "devDependencies": {
     "autoprefixer": "7.2.6",
     "cookie-policy": "1.0.5",
-    "global-nav": "0.2.3",
     "node-sass": "4.11.0",
     "postcss-cli": "4.1.1",
     "sass-lint": "1.12.1",
-    "vanilla-framework": "1.8.0",
     "watch-cli": "0.2.3"
+  },
+  "dependencies": {
+    "vanilla-framework": "1.8.0",
+    "global-nav": "1.2.0"
   }
 }
