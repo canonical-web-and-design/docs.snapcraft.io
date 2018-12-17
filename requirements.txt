@@ -14,6 +14,7 @@ statsd==3.2.2
 gunicorn[gevent]
 prometheus_client==0.3.1
 talisker==0.10.2
+celery==4.2.1
 responses==0.10.4
 
 # Development dependencies
