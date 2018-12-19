@@ -12,8 +12,7 @@ humanize==0.5.1
 python-dateutil==2.7.5
 gunicorn[gevent]
 prometheus_client==0.3.1
-talisker==0.10.2
-celery==4.2.1
+talisker==0.11.0
 responses==0.10.4
 
 # Development dependencies
