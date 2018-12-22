@@ -13,7 +13,7 @@
   },
   "author": "Canonical webteam",
   "devDependencies": {
-    "autoprefixer": "9.4.2",
+    "autoprefixer": "9.4.3",
     "cookie-policy": "1.0.5",
     "node-sass": "4.11.0",
     "postcss-cli": "6.0.1",
