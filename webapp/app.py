@@ -3,11 +3,10 @@ from urllib.parse import urlparse, urlunparse, unquote
 
 # Third-party
 import flask
-import prometheus_flask_exporter
 from requests.exceptions import HTTPError
-from canonicalwebteam.yaml_responses.flask import (
-    prepare_redirects,
+from canonicalwebteam.yaml_responses.flask_helpers import (
     prepare_deleted,
+    prepare_redirects,
 )
 
 # Local
@@ -26,12 +25,6 @@ app = flask.Flask(__name__)
 app.template_folder = "../templates"
 app.static_folder = "../static"
 app.url_map.strict_slashes = False
-
-if not app.debug:
-    metrics = prometheus_flask_exporter.PrometheusMetrics(
-        app, group_by_endpoint=True, buckets=[0.25, 0.5, 0.75, 1, 2], path=None
-    )
-    metrics.start_http_server(port=9990, endpoint="/")
 
 # Parse redirects.yaml and permanent-redirects.yaml
 app.before_request(prepare_redirects())

@@ -63,3 +63,4 @@ static/js/modules/cookie-policy.js
 static/js/modules/global.js
 .coverage
 htmlcov/
+static/js/global-nav.js

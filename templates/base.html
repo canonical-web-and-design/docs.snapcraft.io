@@ -63,8 +63,7 @@
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-K92JCQ"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
-
-    <header id="navigation" class="p-navigation">
+    <header id="navigation" class="p-navigation" style="z-index: 97">
       <div class="row">
         <div class="p-navigation__banner">
           <div class="p-navigation__logo">
@@ -106,6 +105,17 @@
         </nav>
       </div>
     </header>
+
+    <section id="search-docs" class="p-strip--image is-shallow snapcraft-banner-background">
+      <div class="row">
+        <form class="p-search-box u-no-margin--bottom" style="box-shadow: none" action="https://www.ubuntu.com/search">
+          <input type="hidden" name="siteSearch" value="docs.snapcraft.io" />
+          <input type="search" class="p-search-box__input" name="q" placeholder="Search documentation" required />
+          <button type="reset" class="p-search-box__reset" alt="reset" style="right: 6.7rem"><i class="p-icon--close"></i></button>
+          <button type="submit" class="p-button--positive u-no-margin--bottom p-link--external" style="margin-left: 1.5rem; width: auto" alt="search">Search</button>
+        </form>
+      </div>
+    </section>
 
     <div class="l-docs">
       {% block body %}{% endblock %}
@@ -153,5 +163,7 @@
           </div>
       </div>
     </footer>
+    <script src="/static/js/global-nav.js"></script>
+    <script>canonicalGlobalNav.createNav({maxWidth: '64.875rem', showLogins: false});</script>
   </body>
 </html>
