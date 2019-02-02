@@ -22,6 +22,6 @@
   },
   "dependencies": {
     "vanilla-framework": "1.8.1",
-    "global-nav": "1.2.1"
+    "global-nav": "2.0.0"
   }
 }
