@@ -21,6 +21,7 @@ class TestDiscourseDocs(unittest.TestCase):
         self.discourse = models.DiscourseDocs(
             base_url="https://forum.snapcraft.io",
             frontpage_id=3781,
+            category_id=15,  # The "doc" category
             session=self.mock_session,
         )
 
@@ -55,6 +56,22 @@ class TestDiscourseDocs(unittest.TestCase):
         # Check it communicates the appropriate HTTP status
         self.assertEqual(404, context.exception.response.status_code)
 
+    def test_get_document_not_in_category(self):
+        """
+        Check requesting a topic not in the selected category
+        leads to a 404
+        """
+
+        # Catch error
+        with self.assertRaises(HTTPError) as context:
+            self.discourse.get_document(
+                "script-to-remove-expired-kerberos-caches-for-"
+                "enhanced-stability/10096"
+            )
+
+        # Check it's a 404
+        self.assertEqual(404, context.exception.response.status_code)
+
     def test_get_document_broken_nav(self):
         """
         Check that, when we request a document that is different
@@ -69,6 +86,7 @@ class TestDiscourseDocs(unittest.TestCase):
         broken_discourse = models.DiscourseDocs(
             base_url="https://forum.snapcraft.io",
             frontpage_id=3876,
+            category_id=15,  # The "doc" category
             session=self.mock_session,
         )
 
@@ -184,6 +202,7 @@ class TestDiscourseDocs(unittest.TestCase):
         broken_discourse = models.DiscourseDocs(
             base_url="https://forum.snapcraft.io",
             frontpage_id=3876,
+            category_id=15,  # The "doc" category
             session=self.mock_session,
         )
 

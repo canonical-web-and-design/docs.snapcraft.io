@@ -18,7 +18,9 @@ from webapp.models import (
 
 
 discourse = DiscourseDocs(
-    base_url="https://forum.snapcraft.io/", frontpage_id=3781
+    base_url="https://forum.snapcraft.io/",
+    frontpage_id=3781,
+    category_id=15,  # The "doc" category
 )
 
 app = flask.Flask(__name__)

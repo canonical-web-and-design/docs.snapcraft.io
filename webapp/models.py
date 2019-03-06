@@ -26,6 +26,17 @@ class RedirectFoundError(HTTPError):
         self.redirect_path = re.sub("/t(/.*).json", r"\1", url_parts.path)
 
 
+class NotInCategoryError(HTTPError):
+    """
+    If we encounter redirects from Discourse, we need to take action
+    """
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        url_parts = urlparse(self.response.headers["Location"])
+        self.redirect_path = re.sub("/t(/.*).json", r"\1", url_parts.path)
+
+
 class NavigationParseError(Exception):
     """
     Indicates a failure to extract the navigation from
@@ -127,7 +138,9 @@ class DiscourseDocs:
     from a Discourse installation through the API
     """
 
-    def __init__(self, base_url, frontpage_id, session=DEFAULT_SESSION):
+    def __init__(
+        self, base_url, frontpage_id, category_id, session=DEFAULT_SESSION
+    ):
         """
         @param base_url: The Discourse URL (e.g. https://discourse.example.com)
         @param frontpage_id: The ID of the frontpage topic in Discourse.
@@ -136,6 +149,7 @@ class DiscourseDocs:
 
         self.base_url = base_url.rstrip("/")
         self.frontpage_id = frontpage_id
+        self.category_id = category_id
         self.session = session
 
     def __del__(self):
@@ -253,5 +267,14 @@ class DiscourseDocs:
 
         if response.status_code >= 300:
             raise RedirectFoundError(response=response)
+
+        topic = response.json()
+
+        # If topic not in category, raise a 404
+        if topic["category_id"] != self.category_id:
+            error = HTTPError(f"Topic not in category {self.category_id}")
+            response.status_code = 404
+            error.response = response
+            raise error
 
         return response.json()
