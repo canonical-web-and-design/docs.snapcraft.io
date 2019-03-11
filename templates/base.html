@@ -60,17 +60,14 @@
             app_id: "s1rasgdr"
           };
           var use_intercom = false;
-          document.querySelectorAll('.p-sidenav__body ul a').forEach(function(a) {
-            if (a.pathname == location.pathname) {
-              var node = a;
-              // Lists can be nested, so climb until just under the nav element
-              while (node.parentNode && node.parentNode.nodeName != "NAV") node = node.parentNode;
-              if (node.previousElementSibling.textContent == 'Publishing') {
-                // Use Intercom if this page is under Publishing in the TOC
-                use_intercom = true;
-              }
+          var activeNav = document.querySelector('.p-sidenav__body ul a.is-active');
+          if (activeNav) {
+            var ul = activeNav.closest("nav > ul");
+            if (ul && ul.previousSibling.textContent === "Publishing") {
+              // Use Intercom if this page is under Publishing in the TOC
+              use_intercom = true;
             }
-          });
+          }
           if (use_intercom) {
             (function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic('reattach_activator');ic('update',w.intercomSettings);}else{var d=document;var i=function(){i.c(arguments);};i.q=[];i.c=function(args){i.q.push(args);};w.Intercom=i;var l=function(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://widget.intercom.io/widget/s1rasgdr';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);};if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})();
           }
