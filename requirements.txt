@@ -8,9 +8,9 @@ pyyaml==3.13
 yamlordereddictloader==0.4.0
 beautifulsoup4==4.7.1
 humanize==0.5.1
-python-dateutil==2.7.5
+python-dateutil==2.8.0
 gunicorn[gevent]
-talisker==0.11.1
+talisker==0.13.0
 responses==0.10.5
 
 # Development dependencies
