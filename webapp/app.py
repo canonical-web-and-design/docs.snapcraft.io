@@ -21,6 +21,7 @@ discourse = DiscourseDocs(
     base_url="https://forum.snapcraft.io/",
     frontpage_id=3781,
     category_id=15,  # The "doc" category
+    category_name="doc",
 )
 
 app = flask.Flask(__name__)
@@ -114,3 +115,13 @@ def document(path):
         updated=document["updated"],
         nav_html=nav_html,
     )
+
+
+@app.route("/search")
+def search():
+    term = flask.request.args.get("term")
+    if not term:
+        return flask.jsonify({"entries": []})
+
+    search_results = discourse.search_docs(term)
+    return flask.jsonify({"entries": search_results, "term": term})

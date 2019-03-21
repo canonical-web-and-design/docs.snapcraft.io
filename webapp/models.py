@@ -1,5 +1,6 @@
 # Core
 import re
+import urllib
 
 # Third-party
 import dateutil.parser
@@ -139,7 +140,12 @@ class DiscourseDocs:
     """
 
     def __init__(
-        self, base_url, frontpage_id, category_id, session=DEFAULT_SESSION
+        self,
+        base_url,
+        frontpage_id,
+        category_id,
+        category_name,
+        session=DEFAULT_SESSION,
     ):
         """
         @param base_url: The Discourse URL (e.g. https://discourse.example.com)
@@ -150,6 +156,7 @@ class DiscourseDocs:
         self.base_url = base_url.rstrip("/")
         self.frontpage_id = frontpage_id
         self.category_id = category_id
+        self.category_name = category_name
         self.session = session
 
     def __del__(self):
@@ -223,6 +230,13 @@ class DiscourseDocs:
             )
 
         return frontpage_document, str(nav_soup)
+
+    def search_docs(self, term):
+        q = urllib.parse.quote_plus(f"{term} #{self.category_name}")
+        search_endpoint = f"{self.base_url}/search.json?q={q}"
+        response = self.session.get(search_endpoint)
+        search_results = response.json()
+        return search_results
 
     # Private helper methods
     # ===

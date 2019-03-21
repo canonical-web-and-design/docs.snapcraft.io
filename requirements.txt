@@ -8,9 +8,13 @@ yamlordereddictloader==0.4.0
 beautifulsoup4==4.7.1
 humanize==0.5.1
 python-dateutil==2.7.5
-gunicorn[gevent]
 talisker==0.11.1
 responses==0.10.5
+
+# TEMP FIX
+# talisker 0.11.0 has requirement Werkzeug<0.15,>=0.11.5, but you'll have werkzeug 0.15.0 which is incompatible.
+# can probably be removed when we bump talisker
+Werkzeug<0.15
 
 # Development dependencies
 black

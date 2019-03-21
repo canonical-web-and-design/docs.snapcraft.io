@@ -22,6 +22,7 @@ class TestDiscourseDocs(unittest.TestCase):
             base_url="https://forum.snapcraft.io",
             frontpage_id=3781,
             category_id=15,  # The "doc" category
+            category_name="doc",
             session=self.mock_session,
         )
 
@@ -87,6 +88,7 @@ class TestDiscourseDocs(unittest.TestCase):
             base_url="https://forum.snapcraft.io",
             frontpage_id=3876,
             category_id=15,  # The "doc" category
+            category_name="doc",
             session=self.mock_session,
         )
 
@@ -203,6 +205,7 @@ class TestDiscourseDocs(unittest.TestCase):
             base_url="https://forum.snapcraft.io",
             frontpage_id=3876,
             category_id=15,  # The "doc" category
+            category_name="doc",
             session=self.mock_session,
         )
 
