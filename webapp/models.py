@@ -90,43 +90,62 @@ def _process_html(html):
 
 def _replace_notifications(soup):
     """
-    Given some BeutifulSoup of a document,
+    Given some BeautifulSoup of a document,
     replace blockquotes with the appropriate notification markup
     """
 
     with open("templates/_notification.html") as notification_file:
         notification_template = Template(notification_file.read())
 
-    for note in soup.findAll(text=re.compile("ⓘ ")):
-        paragraph = note.parent
-        blockquote = paragraph.parent
+    for note_string in soup.findAll(text=re.compile("ⓘ ")):
+        first_paragraph = note_string.parent
+        blockquote = first_paragraph.parent
+        last_paragraph = blockquote.findChildren(recursive=False)[-1]
 
-        if paragraph.name == "p" and blockquote.name == "blockquote":
-            text_contents = paragraph.encode_contents().decode("utf-8")
-            new_contents = re.sub("^ⓘ ", "", text_contents)
+        if first_paragraph.name == "p" and blockquote.name == "blockquote":
+            # Remove extra padding/margin
+            first_paragraph.attrs["class"] = "u-no-padding--top"
+            if last_paragraph.name == "p":
+                if "class" in last_paragraph.attrs:
+                    last_paragraph.attrs["class"] += " u-no-margin--bottom"
+                else:
+                    last_paragraph.attrs["class"] = "u-no-margin--bottom"
 
-            notification_html = notification_template.render(
-                notification_class="p-notification", contents=new_contents
+            # Remove control emoji
+            notification_html = blockquote.encode_contents().decode("utf-8")
+            notification_html = re.sub(
+                r"^\n<p([^>]*)>ⓘ +", r"<p\1>", notification_html
+            )
+
+            notification = notification_template.render(
+                notification_class="p-notification", contents=notification_html
             )
             blockquote.replace_with(
-                BeautifulSoup(notification_html, features="html.parser")
+                BeautifulSoup(notification, features="html.parser")
             )
 
     for warning in soup.findAll("img", title=":warning:"):
-        paragraph = warning.parent
-        blockquote = paragraph.parent
+        first_paragraph = warning.parent
+        blockquote = first_paragraph.parent
+        last_paragraph = blockquote.findChildren(recursive=False)[-1]
 
-        if paragraph.name == "p" and blockquote.name == "blockquote":
+        if first_paragraph.name == "p" and blockquote.name == "blockquote":
             warning.decompose()
-            text_contents = paragraph.encode_contents().decode("utf-8")
-            new_contents = re.sub("^ ", "", text_contents)
 
-            notification_html = notification_template.render(
+            # Remove extra padding/margin
+            first_paragraph.attrs["class"] = "u-no-padding--top"
+            if last_paragraph.name == "p":
+                if "class" in last_paragraph.attrs:
+                    last_paragraph.attrs["class"] += " u-no-margin--bottom"
+                else:
+                    last_paragraph.attrs["class"] = "u-no-margin--bottom"
+
+            notification = notification_template.render(
                 notification_class="p-notification--caution",
-                contents=new_contents,
+                contents=blockquote.encode_contents().decode("utf-8"),
             )
             blockquote.replace_with(
-                BeautifulSoup(notification_html, features="html.parser")
+                BeautifulSoup(notification, features="html.parser")
             )
 
     return soup

@@ -220,6 +220,48 @@ class TestDiscourseDocs(unittest.TestCase):
         self.assertTrue("<p>The following sections" in doc["body_html"])
         self.assertTrue(doc["forum_link"] in str(context.exception))
 
+    def test_notifications(self):
+        """
+        Check that topics with notifications get converted properly
+        to Vanilla notification markup
+        """
+
+        # Get the document and navigation
+        doc_with_note, nav_html = self.discourse.get_document(
+            "choosing-a-security-model/6847"
+        )
+        doc_with_warning, nav_html = self.discourse.get_document(
+            "service-management/3965"
+        )
+
+        # Check the shape of notification
+        note_li = (
+            "<li>Open arbitrary filesystem paths outside of "
+            "<code>$HOME</code> and /media</li>"
+        )
+        note_end_p = (
+            '<p class="u-no-margin--bottom">In these cases, '
+            '<a href="/t/snap-confinement/6233">“classic” confinement</a> '
+            "may be an option.</p>"
+        )
+
+        self.assertTrue('class="p-notification"' in doc_with_note["body_html"])
+        self.assertTrue(note_li in doc_with_note["body_html"])
+        self.assertTrue(note_end_p in doc_with_note["body_html"])
+        self.assertTrue("ⓘ" not in doc_with_note["body_html"])
+
+        # Check the shape of the warning
+        warning_start_p = (
+            '<p class="u-no-padding--top u-no-margin--bottom"> Stopping snap '
+            "services manually may cause the snap to malfunction. For "
+            "temporarily disabling a snap consider using the <em>enable</em> "
+            "and <em>disable</em> commands instead.</p>"
+        )
+        self.assertTrue(
+            'class="p-notification--caution"' in doc_with_warning["body_html"]
+        )
+        self.assertTrue(warning_start_p in doc_with_warning["body_html"])
+
 
 if __name__ == "__main__":
     unittest.main()
