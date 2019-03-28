@@ -118,8 +118,7 @@ def _replace_notifications(soup):
             )
 
             notification = notification_template.render(
-                notification_class="p-notification",
-                contents=notification_html,
+                notification_class="p-notification", contents=notification_html
             )
             blockquote.replace_with(
                 BeautifulSoup(notification, features="html.parser")
