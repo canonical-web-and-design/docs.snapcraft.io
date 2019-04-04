@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html>
   <head>
-      <meta charset="utf-8">
-      <meta http-equiv="X-UA-Compatible" content="IE=edge">
-      <meta name="viewport" content="width=device-width, initial-scale=1">
+      {% block meta %}
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+      {% endblock %}
 
-      <title>{% if title %}{{ title }} - {% endif %}Documentation for snaps: Universal Linux packages</title>
-
+      {% block title %}
+        <title>{% if title %}{{ title }} - {% endif %}Documentation for snaps: Universal Linux packages</title>
+      {% endblock %}
       <!-- Google Tag Manager -->
       <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
       new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -126,11 +129,10 @@
 
     <section id="search-docs" class="p-strip--image is-shallow snapcraft-banner-background">
       <div class="row">
-        <form class="p-search-box u-no-margin--bottom" style="box-shadow: none" action="https://www.ubuntu.com/search">
-          <input type="hidden" name="siteSearch" value="docs.snapcraft.io" />
-          <input type="search" class="p-search-box__input" name="q" placeholder="Search documentation" required />
+        <form class="p-search-box u-no-margin--bottom" style="box-shadow: none" action="/search">
+          <input type="search" class="p-search-box__input" name="q" {% if query %}value="{{ query }}"{% endif %} placeholder="Search documentation" required/>
           <button type="reset" class="p-search-box__reset" alt="reset" style="right: 6.7rem"><i class="p-icon--close"></i></button>
-          <button type="submit" class="p-button--positive u-no-margin--bottom p-link--external" style="margin-left: 1.5rem; width: auto" alt="search">Search</button>
+          <button type="submit" class="p-button--positive u-no-margin--bottom" style="margin-left: 1.5rem; width: auto" alt="search">Search</button>
         </form>
       </div>
     </section>

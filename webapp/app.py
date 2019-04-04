@@ -1,17 +1,21 @@
 # Core
+import os
 from urllib.parse import urlparse, urlunparse, unquote
 
 # Third-party
 import flask
+from flask import current_app, request
 from requests.exceptions import HTTPError
 from canonicalwebteam.yaml_responses.flask_helpers import (
     prepare_deleted,
     prepare_redirects,
 )
+from werkzeug.debug import DebuggedApplication
 
 # Local
 from webapp.models import (
     DiscourseDocs,
+    get_search_results,
     NavigationParseError,
     RedirectFoundError,
 )
@@ -23,7 +27,16 @@ discourse = DiscourseDocs(
     category_id=15,  # The "doc" category
 )
 
+
 app = flask.Flask(__name__)
+
+if app.debug:
+    app.wsgi_app = DebuggedApplication(app.wsgi_app, evalex=True)
+
+app.config["SEARCH_API_KEY"] = os.getenv("SEARCH_API_KEY")
+app.config["SEARCH_API_URL"] = "https://www.googleapis.com/customsearch/v1"
+app.config["SEARCH_CUSTOM_ID"] = "009048213575199080868:i3zoqdwqk8o"
+
 app.template_folder = "../templates"
 app.static_folder = "../static"
 app.url_map.strict_slashes = False
@@ -114,3 +127,26 @@ def document(path):
         updated=document["updated"],
         nav_html=nav_html,
     )
+
+
+@app.route("/search")
+def search():
+    """
+    Get search results from Google Custom Search
+    """
+    search_api_key = current_app.config["SEARCH_API_KEY"]
+    search_api_url = current_app.config["SEARCH_API_URL"]
+    search_custom_id = current_app.config["SEARCH_CUSTOM_ID"]
+
+    query = request.args.get("q")
+    num = int(request.args.get("num", "10"))
+    start = int(request.args.get("start", "1"))
+
+    context = {"query": query, "start": start, "num": num}
+
+    if query:
+        context["results"] = get_search_results(
+            search_api_key, search_api_url, search_custom_id, query, start, num
+        )
+
+    return flask.render_template("search.html", **context)

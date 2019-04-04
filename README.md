@@ -12,6 +12,12 @@ After [installing Docker](https://docs.docker.com/install/), run:
 ./run
 ```
 
+If you want to run locally with search enabled
+
+``` bash
+./run --env SEARCH_API_KEY={key}
+```
+
 And visit http://127.0.0.1:8030 in your browser.
 
 [circleci]: https://circleci.com/gh/canonical-webteam/docs.snapcraft.io "CircleCI build status"

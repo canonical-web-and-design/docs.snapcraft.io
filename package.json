@@ -1,7 +1,7 @@
 {
   "scripts": {
     "test": "yarn run lint-scss && yarn run lint-python && yarn run test-python",
-    "test-python": "coverage run --source=. -m unittest discover webapp/tests",
+    "test-python": "FLASK_DEBUG=0 coverage run --source=. -m unittest discover webapp/tests",
     "lint-python": "flake8 webapp && black --check --line-length 79 webapp",
     "lint-scss": "sass-lint static/sass/**/*.scss --verbose --no-exit",
     "build": "yarn run build-css && yarn run build-js",
