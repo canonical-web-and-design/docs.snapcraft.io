@@ -4,28 +4,17 @@ from urllib.parse import urlparse, urlunparse, unquote
 
 # Third-party
 import flask
-from flask import current_app, request
-from requests.exceptions import HTTPError
+from canonicalwebteam.discourse_docs import DiscourseDocs, DiscourseAPI
+from canonicalwebteam.discourse_docs.models import NavigationParseError
 from canonicalwebteam.yaml_responses.flask_helpers import (
     prepare_deleted,
     prepare_redirects,
 )
+from flask import current_app, request
 from werkzeug.debug import DebuggedApplication
 
 # Local
-from webapp.models import (
-    DiscourseDocs,
-    get_search_results,
-    NavigationParseError,
-    RedirectFoundError,
-)
-
-
-discourse = DiscourseDocs(
-    base_url="https://forum.snapcraft.io/",
-    frontpage_id=3781,
-    category_id=15,  # The "doc" category
-)
+from webapp.models import get_search_results
 
 
 app = flask.Flask(__name__)
@@ -41,13 +30,25 @@ app.template_folder = "../templates"
 app.static_folder = "../static"
 app.url_map.strict_slashes = False
 
+discourse_api = DiscourseAPI(
+    base_url="https://forum.snapcraft.io/",
+    frontpage_id=3781,  # The "Snap Documentation" topic
+    category_id=15,  # The "doc" category
+)
+DiscourseDocs().init_app(
+    app=app,
+    model=discourse_api,
+    url_prefix="/",
+    document_template="document.html",
+)
+
 # Parse redirects.yaml and permanent-redirects.yaml
 app.before_request(prepare_redirects())
 
 
 def deleted_callback(context):
     try:
-        frontpage, nav_html = discourse.parse_frontpage()
+        frontpage, nav_html = discourse_api.parse_frontpage()
     except NavigationParseError as nav_error:
         nav_html = f"<p>{str(nav_error)}</p>"
 
@@ -63,7 +64,7 @@ app.before_request(prepare_deleted(view_callback=deleted_callback))
 @app.errorhandler(404)
 def page_not_found(e):
     try:
-        frontpage, nav_html = discourse.parse_frontpage()
+        frontpage, nav_html = discourse_api.parse_frontpage()
     except NavigationParseError as nav_error:
         nav_html = f"<p>{str(nav_error)}</p>"
 
@@ -94,39 +95,6 @@ def clear_trailing():
         new_uri = urlunparse(parsed_url._replace(path=path[:-1]))
 
         return flask.redirect(new_uri)
-
-
-@app.route("/")
-def homepage():
-    """
-    Redirect to the frontpage topic
-    """
-
-    frontpage, nav_html = discourse.parse_frontpage()
-
-    return flask.redirect(frontpage["path"])
-
-
-@app.route("/<path:path>")
-def document(path):
-    try:
-        document, nav_html = discourse.get_document(path)
-    except RedirectFoundError as redirect_error:
-        return flask.redirect(redirect_error.redirect_path)
-    except HTTPError as http_error:
-        flask.abort(http_error.response.status_code)
-    except NavigationParseError as nav_error:
-        document = nav_error.document
-        nav_html = f"<p>{str(nav_error)}</p>"
-
-    return flask.render_template(
-        "document.html",
-        title=document["title"],
-        body_html=document["body_html"],
-        forum_link=document["forum_link"],
-        updated=document["updated"],
-        nav_html=nav_html,
-    )
 
 
 @app.route("/search")
