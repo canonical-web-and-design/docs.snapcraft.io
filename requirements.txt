@@ -1,5 +1,5 @@
 # App dependencies
-talisker==0.11.1
+talisker[gunicorn]==0.14.2
 Flask==1.0.2
 canonicalwebteam.discourse_docs==0.1.1
 canonicalwebteam.http==0.1.6
