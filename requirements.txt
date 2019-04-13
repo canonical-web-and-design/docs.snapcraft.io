@@ -9,8 +9,8 @@ requests-cache==0.4.13
 yamlordereddictloader==0.4.0
 beautifulsoup4==4.7.1
 humanize==0.5.1
-python-dateutil==2.7.5
-responses==0.10.5
+python-dateutil==2.8.0
+responses==0.10.6
 
 # Development dependencies
 black
