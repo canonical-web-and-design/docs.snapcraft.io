@@ -6,7 +6,7 @@
     "lint-scss": "sass-lint static/sass/**/*.scss --verbose --no-exit",
     "build": "yarn run build-css && yarn run build-js",
     "build-css": "node-sass --include-path node_modules static/sass --output static/css && postcss --use autoprefixer --replace 'static/css/**/*.css'",
-    "build-js": "mkdir -p static/js && cp node_modules/global-nav/dist/index.js static/js/global-nav.js",
+    "build-js": "mkdir -p static/js && cp node_modules/@canonical/global-nav/dist/index.js static/js/global-nav.js && cp node_modules/@canonical/global-nav/dist/index.js.map static/js/index.js.map",
     "watch": "watch -p 'static/sass/**/*.scss' -c 'yarn run build'",
     "clean": "rm -rf node_modules yarn-error.log static/css/**/*.css *.log *.sqlite _site/ build/ .jekyll-metadata .bundle",
     "serve": "./entrypoint 0.0.0.0:${PORT}"
@@ -21,7 +21,7 @@
     "watch-cli": "0.2.3"
   },
   "dependencies": {
-    "vanilla-framework": "1.8.1",
-    "global-nav": "2.0.2"
+    "@canonical/global-nav": "^2.0.6",
+    "vanilla-framework": "1.8.1"
   }
 }
