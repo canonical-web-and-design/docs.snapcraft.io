@@ -1,21 +1,23 @@
 # Core
 import os
-from urllib.parse import urlparse, urlunparse, unquote
+from urllib.parse import unquote, urlparse, urlunparse
 
 # Third-party
 import flask
-from canonicalwebteam.discourse_docs import DiscourseDocs, DiscourseAPI
+from flask import current_app, request
+from werkzeug.debug import DebuggedApplication
+
+import talisker.flask
+import talisker.logs
+from canonicalwebteam.discourse_docs import DiscourseAPI, DiscourseDocs
 from canonicalwebteam.discourse_docs.models import NavigationParseError
 from canonicalwebteam.yaml_responses.flask_helpers import (
     prepare_deleted,
     prepare_redirects,
 )
-from flask import current_app, request
-from werkzeug.debug import DebuggedApplication
 
 # Local
 from webapp.models import get_search_results
-
 
 app = flask.Flask(__name__)
 
@@ -29,6 +31,9 @@ app.config["SEARCH_CUSTOM_ID"] = "009048213575199080868:i3zoqdwqk8o"
 app.template_folder = "../templates"
 app.static_folder = "../static"
 app.url_map.strict_slashes = False
+
+talisker.flask.register(app)
+talisker.logs.set_global_extra({"service": "docs.snapcraft.io"})
 
 discourse_api = DiscourseAPI(
     base_url="https://forum.snapcraft.io/",
