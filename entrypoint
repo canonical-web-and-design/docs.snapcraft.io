@@ -2,7 +2,7 @@
 
 set -e
 
-RUN_COMMAND="talisker.gunicorn webapp.app:app --bind $1 --worker-class sync --workers 8 --name talisker-`hostname`"
+RUN_COMMAND="talisker.gunicorn webapp.app:app --bind $1 --worker-class sync --workers 3 --name talisker-`hostname`"
 
 if [ "${FLASK_DEBUG}" = true ] || [ "${FLASK_DEBUG}" = 1 ]; then
     echo ""
