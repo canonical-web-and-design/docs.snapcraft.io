@@ -5,6 +5,7 @@ from urllib.parse import unquote, urlparse, urlunparse
 # Third-party
 import flask
 from flask import current_app, request
+from werkzeug.contrib.fixers import ProxyFix
 from werkzeug.debug import DebuggedApplication
 
 import talisker.flask
@@ -31,6 +32,7 @@ app.config["SEARCH_CUSTOM_ID"] = "009048213575199080868:i3zoqdwqk8o"
 app.template_folder = "../templates"
 app.static_folder = "../static"
 app.url_map.strict_slashes = False
+app.wsgi_app = ProxyFix(app.wsgi_app)
 
 talisker.flask.register(app)
 talisker.logs.set_global_extra({"service": "docs.snapcraft.io"})
