@@ -1,4 +1,3 @@
-t/(?P<path>.*)/?: /{path}
 build-snaps/?: /the-snap-format/698
 build-snaps/build-for-another-arch/?: /building-the-snap/6800
 build-snaps/build-on-lxd-docker/?: /building-the-snap-on-docker/6757
