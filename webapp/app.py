@@ -71,9 +71,7 @@ def page_not_found(e):
     index = parse_index(discourse_api.get_topic(discourse_index_id))
 
     return (
-        flask.render_template(
-            "404.html", navigation=index["navigation"]
-        ),
+        flask.render_template("404.html", navigation=index["navigation"]),
         404,
     )
 
