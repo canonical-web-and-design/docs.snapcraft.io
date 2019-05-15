@@ -1,12 +1,11 @@
 # App dependencies
 talisker[gunicorn]==0.14.3
 Flask==1.0.2
-canonicalwebteam.discourse-docs==0.2.0
+canonicalwebteam.discourse-docs==0.3.0
 canonicalwebteam.http==0.1.6
 canonicalwebteam.yaml_responses[flask]==1.1.0
 
 # Development dependencies
-black
 blinker # Flask-Testing is not pulling it
 coverage
 Flask-Testing==0.7.1
