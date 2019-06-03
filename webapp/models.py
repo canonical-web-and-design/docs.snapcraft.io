@@ -3,7 +3,7 @@ from canonicalwebteam.http import CachedSession
 
 
 # Constants
-SEARCH_SESSION = CachedSession(expire_after=600)
+SEARCH_SESSION = CachedSession(fallback_cache_duration=600)
 
 
 class NoAPIKeyError(Exception):
